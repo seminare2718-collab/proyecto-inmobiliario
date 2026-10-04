@@ -413,6 +413,12 @@
         "modelFloorElevation": 14.381,
         "eyeHeight": 1.6
       }
+    },
+    "realEnvironment": {
+      "streetViewEmbed": "https://www.google.com/maps/embed?pb=!4v1791136874159!6m8!1m7!1s6h757DwzPad_g6NTJ6J36g!2m2!1d-53.78427046813532!2d-67.6968785727507!3f141.64058!4f0!5f0.7820865974627469",
+      "streetViewUrl": "https://www.google.com/maps/@?api=1&map_action=pano&pano=6h757DwzPad_g6NTJ6J36g",
+      "earthUrl": "https://earth.google.com/web/search/Presidente+Bernardino+Rivadavia+417,+Rio+Grande,+Argentina",
+      "captureDate": "abril de 2014"
     }
   }
 }
