@@ -8,7 +8,7 @@
       "floor": 1,
       "letter": "A",
       "status": "available",
-      "totalArea": null,
+      "totalArea": 57.67,
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
@@ -23,7 +23,7 @@
       "floor": 1,
       "letter": "B",
       "status": "available",
-      "totalArea": null,
+      "totalArea": 57.67,
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
@@ -38,7 +38,7 @@
       "floor": 1,
       "letter": "C",
       "status": "sold",
-      "totalArea": null,
+      "totalArea": 57.67,
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
@@ -53,7 +53,7 @@
       "floor": 1,
       "letter": "D",
       "status": "available",
-      "totalArea": null,
+      "totalArea": 57.67,
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
@@ -68,7 +68,7 @@
       "floor": 2,
       "letter": "A",
       "status": "available",
-      "totalArea": null,
+      "totalArea": 57.67,
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
@@ -83,7 +83,7 @@
       "floor": 2,
       "letter": "B",
       "status": "available",
-      "totalArea": null,
+      "totalArea": 57.67,
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
@@ -98,7 +98,7 @@
       "floor": 2,
       "letter": "C",
       "status": "available",
-      "totalArea": null,
+      "totalArea": 57.67,
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
@@ -113,7 +113,7 @@
       "floor": 2,
       "letter": "D",
       "status": "sold",
-      "totalArea": null,
+      "totalArea": 57.67,
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
@@ -128,7 +128,7 @@
       "floor": 3,
       "letter": "A",
       "status": "available",
-      "totalArea": null,
+      "totalArea": 57.67,
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
@@ -143,7 +143,7 @@
       "floor": 3,
       "letter": "B",
       "status": "sold",
-      "totalArea": null,
+      "totalArea": 57.67,
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
@@ -158,7 +158,7 @@
       "floor": 3,
       "letter": "C",
       "status": "available",
-      "totalArea": null,
+      "totalArea": 57.67,
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
@@ -173,7 +173,7 @@
       "floor": 3,
       "letter": "D",
       "status": "available",
-      "totalArea": null,
+      "totalArea": 57.67,
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
@@ -188,7 +188,7 @@
       "floor": 4,
       "letter": "A",
       "status": "available",
-      "totalArea": null,
+      "totalArea": 57.67,
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
@@ -203,7 +203,7 @@
       "floor": 4,
       "letter": "B",
       "status": "available",
-      "totalArea": null,
+      "totalArea": 57.67,
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
@@ -218,7 +218,7 @@
       "floor": 4,
       "letter": "C",
       "status": "sold",
-      "totalArea": null,
+      "totalArea": 57.67,
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
@@ -233,7 +233,7 @@
       "floor": 4,
       "letter": "D",
       "status": "available",
-      "totalArea": null,
+      "totalArea": 57.67,
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
@@ -248,7 +248,7 @@
       "floor": 0,
       "type": "commercial",
       "status": "available",
-      "totalArea": null,
+      "totalArea": 93.45,
       "coveredArea": null,
       "rooms": null,
       "bedrooms": 0,
@@ -263,7 +263,7 @@
       "floor": 0,
       "type": "commercial",
       "status": "sold",
-      "totalArea": null,
+      "totalArea": 113.35,
       "coveredArea": null,
       "rooms": null,
       "bedrooms": 0,
@@ -315,6 +315,104 @@
         "day": "assets/site-exterior-day-5.webp",
         "night": "assets/site-exterior-night-5.webp"
       }
-    ]
+    ],
+    "balconyViews": {
+      "1A": {
+        "src": "assets/balcony-1A.webp",
+        "orientation": "Frente hacia Mackinlay",
+        "modelFloorElevation": 5.381,
+        "eyeHeight": 1.6
+      },
+      "1B": {
+        "src": "assets/balcony-1B.webp",
+        "orientation": "Frente hacia Mackinlay",
+        "modelFloorElevation": 5.381,
+        "eyeHeight": 1.6
+      },
+      "1C": {
+        "src": "assets/balcony-1C.webp",
+        "orientation": "Contrafrente",
+        "modelFloorElevation": 5.381,
+        "eyeHeight": 1.6
+      },
+      "1D": {
+        "src": "assets/balcony-1D.webp",
+        "orientation": "Contrafrente",
+        "modelFloorElevation": 5.381,
+        "eyeHeight": 1.6
+      },
+      "2A": {
+        "src": "assets/balcony-2A.webp",
+        "orientation": "Frente hacia Mackinlay",
+        "modelFloorElevation": 8.381,
+        "eyeHeight": 1.6
+      },
+      "2B": {
+        "src": "assets/balcony-2B.webp",
+        "orientation": "Frente hacia Mackinlay",
+        "modelFloorElevation": 8.381,
+        "eyeHeight": 1.6
+      },
+      "2C": {
+        "src": "assets/balcony-2C.webp",
+        "orientation": "Contrafrente",
+        "modelFloorElevation": 8.381,
+        "eyeHeight": 1.6
+      },
+      "2D": {
+        "src": "assets/balcony-2D.webp",
+        "orientation": "Contrafrente",
+        "modelFloorElevation": 8.381,
+        "eyeHeight": 1.6
+      },
+      "3A": {
+        "src": "assets/balcony-3A.webp",
+        "orientation": "Frente hacia Mackinlay",
+        "modelFloorElevation": 11.381,
+        "eyeHeight": 1.6
+      },
+      "3B": {
+        "src": "assets/balcony-3B.webp",
+        "orientation": "Frente hacia Mackinlay",
+        "modelFloorElevation": 11.381,
+        "eyeHeight": 1.6
+      },
+      "3C": {
+        "src": "assets/balcony-3C.webp",
+        "orientation": "Contrafrente",
+        "modelFloorElevation": 11.381,
+        "eyeHeight": 1.6
+      },
+      "3D": {
+        "src": "assets/balcony-3D.webp",
+        "orientation": "Contrafrente",
+        "modelFloorElevation": 11.381,
+        "eyeHeight": 1.6
+      },
+      "4A": {
+        "src": "assets/balcony-4A.webp",
+        "orientation": "Frente hacia Mackinlay",
+        "modelFloorElevation": 14.381,
+        "eyeHeight": 1.6
+      },
+      "4B": {
+        "src": "assets/balcony-4B.webp",
+        "orientation": "Frente hacia Mackinlay",
+        "modelFloorElevation": 14.381,
+        "eyeHeight": 1.6
+      },
+      "4C": {
+        "src": "assets/balcony-4C.webp",
+        "orientation": "Contrafrente",
+        "modelFloorElevation": 14.381,
+        "eyeHeight": 1.6
+      },
+      "4D": {
+        "src": "assets/balcony-4D.webp",
+        "orientation": "Contrafrente",
+        "modelFloorElevation": 14.381,
+        "eyeHeight": 1.6
+      }
+    }
   }
 }
