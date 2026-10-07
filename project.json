@@ -287,33 +287,33 @@
     },
     "arrivalVideo": "assets/site-arrival.webm",
     "cover": {
-      "day": "assets/site-front-day.webp",
-      "night": "assets/site-front-night.webp"
+      "day": "assets/render-20261007-front-day.webp",
+      "night": "assets/render-20261007-front-night.webp"
     },
     "exterior": [
       {
-        "day": "assets/site-exterior-day-0.webp",
-        "night": "assets/site-exterior-night-0.webp"
+        "day": "assets/render-20261007-exterior-day-0.webp",
+        "night": "assets/render-20261007-exterior-night-0.webp"
       },
       {
-        "day": "assets/site-exterior-day-1.webp",
-        "night": "assets/site-exterior-night-1.webp"
+        "day": "assets/render-20261007-exterior-day-1.webp",
+        "night": "assets/render-20261007-exterior-night-1.webp"
       },
       {
-        "day": "assets/site-exterior-day-2.webp",
-        "night": "assets/site-exterior-night-2.webp"
+        "day": "assets/render-20261007-exterior-day-2.webp",
+        "night": "assets/render-20261007-exterior-night-2.webp"
       },
       {
-        "day": "assets/site-exterior-day-3.webp",
-        "night": "assets/site-exterior-night-3.webp"
+        "day": "assets/render-20261007-exterior-day-3.webp",
+        "night": "assets/render-20261007-exterior-night-3.webp"
       },
       {
-        "day": "assets/site-exterior-day-4.webp",
-        "night": "assets/site-exterior-night-4.webp"
+        "day": "assets/render-20261007-exterior-day-4.webp",
+        "night": "assets/render-20261007-exterior-night-4.webp"
       },
       {
-        "day": "assets/site-exterior-day-5.webp",
-        "night": "assets/site-exterior-night-5.webp"
+        "day": "assets/render-20261007-exterior-day-5.webp",
+        "night": "assets/render-20261007-exterior-night-5.webp"
       }
     ],
     "balconyViews": {
