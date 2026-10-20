@@ -318,100 +318,116 @@
     ],
     "balconyViews": {
       "1A": {
-        "src": "assets/balcony-1A.webp",
-        "orientation": "Frente hacia Mackinlay",
+        "src": "assets/balcony-urban-20261019-1A.webp",
+        "orientation": "Frente hacia Mackinlay · Orientación al mar",
         "modelFloorElevation": 5.381,
-        "eyeHeight": 1.6
+        "eyeHeight": 1.6,
+        "updated": "2026-10-19"
       },
       "1B": {
-        "src": "assets/balcony-1B.webp",
-        "orientation": "Frente hacia Mackinlay",
+        "src": "assets/balcony-urban-20261019-1B.webp",
+        "orientation": "Frente hacia Mackinlay · Orientación al mar",
         "modelFloorElevation": 5.381,
-        "eyeHeight": 1.6
+        "eyeHeight": 1.6,
+        "updated": "2026-10-19"
       },
       "1C": {
-        "src": "assets/balcony-1C.webp",
-        "orientation": "Contrafrente",
+        "src": "assets/balcony-urban-20261019-1C.webp",
+        "orientation": "Contrafrente · Orientación hacia la ciudad",
         "modelFloorElevation": 5.381,
-        "eyeHeight": 1.6
+        "eyeHeight": 1.6,
+        "updated": "2026-10-19"
       },
       "1D": {
-        "src": "assets/balcony-1D.webp",
-        "orientation": "Contrafrente",
+        "src": "assets/balcony-urban-20261019-1D.webp",
+        "orientation": "Contrafrente · Orientación hacia la ciudad",
         "modelFloorElevation": 5.381,
-        "eyeHeight": 1.6
+        "eyeHeight": 1.6,
+        "updated": "2026-10-19"
       },
       "2A": {
-        "src": "assets/balcony-2A.webp",
-        "orientation": "Frente hacia Mackinlay",
+        "src": "assets/balcony-urban-20261019-2A.webp",
+        "orientation": "Frente hacia Mackinlay · Orientación al mar",
         "modelFloorElevation": 8.381,
-        "eyeHeight": 1.6
+        "eyeHeight": 1.6,
+        "updated": "2026-10-19"
       },
       "2B": {
-        "src": "assets/balcony-2B.webp",
-        "orientation": "Frente hacia Mackinlay",
+        "src": "assets/balcony-urban-20261019-2B.webp",
+        "orientation": "Frente hacia Mackinlay · Orientación al mar",
         "modelFloorElevation": 8.381,
-        "eyeHeight": 1.6
+        "eyeHeight": 1.6,
+        "updated": "2026-10-19"
       },
       "2C": {
-        "src": "assets/balcony-2C.webp",
-        "orientation": "Contrafrente",
+        "src": "assets/balcony-urban-20261019-2C.webp",
+        "orientation": "Contrafrente · Orientación hacia la ciudad",
         "modelFloorElevation": 8.381,
-        "eyeHeight": 1.6
+        "eyeHeight": 1.6,
+        "updated": "2026-10-19"
       },
       "2D": {
-        "src": "assets/balcony-2D.webp",
-        "orientation": "Contrafrente",
+        "src": "assets/balcony-urban-20261019-2D.webp",
+        "orientation": "Contrafrente · Orientación hacia la ciudad",
         "modelFloorElevation": 8.381,
-        "eyeHeight": 1.6
+        "eyeHeight": 1.6,
+        "updated": "2026-10-19"
       },
       "3A": {
-        "src": "assets/balcony-3A.webp",
-        "orientation": "Frente hacia Mackinlay",
+        "src": "assets/balcony-urban-20261019-3A.webp",
+        "orientation": "Frente hacia Mackinlay · Orientación al mar",
         "modelFloorElevation": 11.381,
-        "eyeHeight": 1.6
+        "eyeHeight": 1.6,
+        "updated": "2026-10-19"
       },
       "3B": {
-        "src": "assets/balcony-3B.webp",
-        "orientation": "Frente hacia Mackinlay",
+        "src": "assets/balcony-urban-20261019-3B.webp",
+        "orientation": "Frente hacia Mackinlay · Orientación al mar",
         "modelFloorElevation": 11.381,
-        "eyeHeight": 1.6
+        "eyeHeight": 1.6,
+        "updated": "2026-10-19"
       },
       "3C": {
-        "src": "assets/balcony-3C.webp",
-        "orientation": "Contrafrente",
+        "src": "assets/balcony-urban-20261019-3C.webp",
+        "orientation": "Contrafrente · Orientación hacia la ciudad",
         "modelFloorElevation": 11.381,
-        "eyeHeight": 1.6
+        "eyeHeight": 1.6,
+        "updated": "2026-10-19"
       },
       "3D": {
-        "src": "assets/balcony-3D.webp",
-        "orientation": "Contrafrente",
+        "src": "assets/balcony-urban-20261019-3D.webp",
+        "orientation": "Contrafrente · Orientación hacia la ciudad",
         "modelFloorElevation": 11.381,
-        "eyeHeight": 1.6
+        "eyeHeight": 1.6,
+        "updated": "2026-10-19"
       },
       "4A": {
-        "src": "assets/balcony-4A.webp",
-        "orientation": "Frente hacia Mackinlay",
+        "src": "assets/balcony-urban-20261019-4A.webp",
+        "orientation": "Frente hacia Mackinlay · Orientación al mar",
         "modelFloorElevation": 14.381,
-        "eyeHeight": 1.6
+        "eyeHeight": 1.6,
+        "updated": "2026-10-19"
       },
       "4B": {
-        "src": "assets/balcony-4B.webp",
-        "orientation": "Frente hacia Mackinlay",
+        "src": "assets/balcony-urban-20261019-4B.webp",
+        "orientation": "Frente hacia Mackinlay · Orientación al mar",
         "modelFloorElevation": 14.381,
-        "eyeHeight": 1.6
+        "eyeHeight": 1.6,
+        "updated": "2026-10-19"
       },
       "4C": {
-        "src": "assets/balcony-4C.webp",
-        "orientation": "Contrafrente",
+        "src": "assets/balcony-urban-20261019-4C.webp",
+        "orientation": "Contrafrente · Orientación hacia la ciudad",
         "modelFloorElevation": 14.381,
-        "eyeHeight": 1.6
+        "eyeHeight": 1.6,
+        "updated": "2026-10-19"
       },
       "4D": {
-        "src": "assets/balcony-4D.webp",
-        "orientation": "Contrafrente",
+        "src": "assets/balcony-urban-20261019-4D.webp",
+        "orientation": "Contrafrente · Orientación hacia la ciudad",
         "modelFloorElevation": 14.381,
-        "eyeHeight": 1.6
+        "eyeHeight": 1.6,
+        "updated": "2026-10-19"
       }
     },
     "realEnvironment": {
@@ -419,6 +435,13 @@
       "streetViewUrl": "https://www.google.com/maps/@?api=1&map_action=pano&pano=6h757DwzPad_g6NTJ6J36g",
       "earthUrl": "https://earth.google.com/web/search/Presidente+Bernardino+Rivadavia+417,+Rio+Grande,+Argentina",
       "captureDate": "abril de 2014"
+    },
+    "streetWalk": {
+      "model": "assets/street-context-20261019.glb",
+      "navigation": "assets/street-walk-20261019.json",
+      "source": "ENTORNO_SEMINARE.skp",
+      "description": "Recorrido 3D a nivel de calle por el entorno reconstruido del proyecto."
     }
-  }
+  },
+  "mapData": "assets/nearby-places-20261019.json"
 }
