@@ -78,3 +78,16 @@
  .street-look{top:8px;right:8px;gap:5px}.street-look button{width:31px;height:31px;font-size:18px}
  [data-screen=detail]:has(#localStreetPanel:not([hidden])) #detailMedia{height:55dvh;min-height:360px}
 }
+
+/* Location and hover details live inside the existing nearby map. */
+.nearby-heading .nearby-location{margin:8px 0 0;font-size:12px;line-height:1.5;color:#777}
+#nearbyMap .nearby-place-tooltip{border:1px solid #e5e3dd;border-radius:12px;background:#fff;color:#303030;padding:13px 16px;box-shadow:0 5px 22px #0002;white-space:normal;width:max-content;max-width:280px;line-height:1.5}
+#nearbyMap .nearby-place-tooltip::before{border-top-color:#fff}
+.nearby-place-card strong,.nearby-place-card span,.nearby-place-card small{display:block}
+.nearby-place-card strong{font-size:13px;font-weight:600;line-height:1.4}
+.nearby-place-card .nearby-place-type{font-size:11px;color:#666;line-height:1.5;margin-top:5px}
+.nearby-place-card small{font-size:10px;color:#888;margin-top:5px;line-height:1.5}
+#nearbyMap .nearby-place-popup .leaflet-popup-content{margin:14px 18px}
+#nearbyMap .leaflet-popup-content a{display:inline-block;color:#444;font-size:11px;line-height:1.5;margin-top:10px}
+#nearbyMap .leaflet-interactive[role=button]:focus-visible{outline:none;stroke:#b89b5e;stroke-width:4}
+@media(max-width:650px){.nearby-heading .nearby-location{font-size:11px;margin-top:6px}#nearbyMap .nearby-place-tooltip{max-width:230px;padding:11px 13px}}

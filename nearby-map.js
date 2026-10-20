@@ -1,5 +1,29 @@
 const categories = { all: 'Todos', compras: 'Compras', gastronomia: 'Gastronomía', salud: 'Salud', educacion: 'Educación', paseos: 'Paseos', servicios: 'Servicios' };
 const kindLabels = { supermarket:'supermercado almacén', convenience:'almacén kiosco', pharmacy:'farmacia', restaurant:'restaurante comida', cafe:'café cafetería', fast_food:'comida rápida', bar:'bar bebidas', bakery:'panadería', hospital:'hospital', school:'escuela colegio', university:'universidad', bank:'banco', atm:'cajero banco', clothes:'ropa indumentaria', furniture:'muebles', museum:'museo', park:'parque plaza', car:'autos concesionaria', car_repair:'taller autos', bicycle:'bicicletas', hairdresser:'peluquería', hardware:'ferretería', electronics:'electrónica', shoes:'zapatos calzado' };
+const placeTypes = {
+  supermarket:'Supermercado', convenience:'Almacén / kiosco', pharmacy:'Farmacia',
+  restaurant:'Restaurante', cafe:'Cafetería', fast_food:'Comida rápida', bar:'Bar', pub:'Bar',
+  ice_cream:'Heladería', bakery:'Panadería', confectionery:'Tienda de dulces', chocolate:'Chocolatería', deli:'Alimentos preparados',
+  museum:'Museo', park:'Parque / espacio verde', playground:'Juegos infantiles', attraction:'Lugar de interés', viewpoint:'Mirador', gallery:'Galería de arte',
+  hospital:'Hospital', clinic:'Clínica', doctors:'Consultorio médico', dentist:'Odontología', veterinary:'Veterinaria', chemist:'Droguería', medical_supply:'Insumos médicos',
+  school:'Escuela / colegio', kindergarten:'Jardín de infantes', university:'Universidad', college:'Institución educativa', library:'Biblioteca',
+  clothes:'Tienda de ropa', furniture:'Mueblería', fashion_accessories:'Accesorios de moda', shoes:'Zapatería', bed:'Colchones y camas',
+  electronics:'Electrónica', computer:'Informática', mobile_phone:'Telefonía', gift:'Regalería', jewelry:'Joyería',
+  books:'Librería', stationery:'Librería / papelería', hardware:'Ferretería', paint:'Pinturería', houseware:'Artículos para el hogar',
+  car:'Concesionaria de autos', car_repair:'Taller de autos', car_parts:'Repuestos de autos', bicycle:'Bicicletería', fuel:'Estación de servicio',
+  bank:'Banco', atm:'Cajero automático', post_office:'Correo', community_centre:'Centro comunitario', townhall:'Municipalidad', police:'Policía',
+  travel_agency:'Agencia de viajes', mall:'Centro comercial', beauty:'Estética / belleza', optician:'Óptica', health_food:'Alimentos saludables', hairdresser:'Peluquería', hairdresser_supply:'Insumos de peluquería',
+  sports:'Artículos deportivos', sports_centre:'Centro deportivo', stadium:'Estadio', fitness_centre:'Gimnasio', trade:'Comercio especializado'
+};
+function placeType(place) {
+  return place.kind === 'park' && /^plaza\b/i.test(place.name) ? 'Plaza' : placeTypes[place.kind] || categories[place.category] || 'Lugar del mapa';
+}
+function placeCard(place) {
+  const card = el('div', null, 'nearby-place-card');
+  card.append(el('strong', place.name), el('span', [placeType(place), categories[place.category]].filter((v,i,a) => v && a.indexOf(v) === i).join(' · '), 'nearby-place-type'));
+  if (place.address) card.append(el('small', place.address));
+  return card;
+}
 const modes = { walking: { label: 'A pie', profile: 'foot', icon: '↟' }, driving: { label: 'En auto', profile: 'car', icon: '↗' }, bicycling: { label: 'En bici', profile: 'bike', icon: '◉' } };
 let instance, leafletPromise, lastRequest = 0, routeQueue = Promise.resolve();
 const routeCache = new Map();
@@ -48,7 +72,7 @@ class NearbyMap {
     this.token = 0;
     this.searchToken = 0;
     this.markers = new Map();
-    root.innerHTML = `<div class="nearby-heading"><div><p class="eyebrow">UBICACIÓN Y CERCANÍA</p><h2>Todo, cerca del proyecto.</h2></div><p>Elegí un lugar y compará cómo llegar.</p></div>
+    root.innerHTML = `<div class="nearby-heading"><div><p class="eyebrow">UBICACIÓN Y CERCANÍA</p><h2>Todo, cerca del proyecto.</h2><p id="nearbyLocation" class="nearby-location"></p></div><p>Pasá el cursor por un lugar o tocá para explorarlo.</p></div>
       <div class="nearby-layout"><aside class="nearby-sidebar"><form id="nearbySearch"><label for="nearbyQuery">¿Qué estás buscando?</label><div class="nearby-search-row"><input id="nearbyQuery" type="search" autocomplete="off" placeholder="Un café, una farmacia, un negocio…"><button type="submit">Buscar</button></div></form>
       <div id="nearbyCategories" class="nearby-categories" aria-label="Tipo de lugar"></div><p id="nearbyMessage" role="status" class="nearby-message"></p>
       <section id="nearbySelection" class="nearby-selection" aria-label="Recorridos al lugar elegido" hidden><span class="eyebrow">DESDE EL PROYECTO</span><h3 id="nearbyName"></h3><p id="nearbyAddress"></p><div id="nearbyModes" class="nearby-modes"></div><p id="nearbyRouteSummary" aria-live="polite"></p><a id="nearbyGoogle" target="_blank" rel="noopener">Abrir recorrido en Google Maps ↗</a><small>Tiempos estimados, sin tráfico en vivo.</small></section>
@@ -93,13 +117,19 @@ class NearbyMap {
     const [L, response] = await Promise.all([loadLeaflet(), fetch(url)]);
     if (!response.ok) throw new Error('Lugares no disponibles');
     this.data = await response.json();
+    this.get('nearbyLocation').textContent = this.data.origin.address;
     this.map = L.map(this.get('nearbyMap'), { zoomControl: false, scrollWheelZoom: true }).setView([this.data.origin.lat, this.data.origin.lng], 16);
     L.control.zoom({ position: 'topright' }).addTo(this.map);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(this.map);
     this.map.attributionControl.addAttribution('Rutas: <a href="https://routing.openstreetmap.de/about.html" target="_blank" rel="noopener">OSRM / FOSSGIS</a> · <a href="https://www.openstreetmap.org/fixthemap" target="_blank" rel="noopener">Corregir el mapa</a>');
     const origin = L.divIcon({ className: 'nearby-project-marker', html: '<span>S</span>', iconSize: [36, 36], iconAnchor: [18, 18] });
     const label = el('div'); label.append(el('strong', 'Proyecto Inmobiliario'), el('p', this.data.origin.address));
-    L.marker([this.data.origin.lat, this.data.origin.lng], { icon: origin, zIndexOffset: 1000, title: 'Proyecto Inmobiliario' }).bindPopup(label).addTo(this.map);
+    const locationLink = el('a', 'Ver ubicación en Google Maps ↗');
+    locationLink.href = 'https://www.google.com/maps/search/?' + new URLSearchParams({ api:'1', query:`${this.data.origin.lat},${this.data.origin.lng}` });
+    locationLink.target = '_blank'; locationLink.rel = 'noopener'; label.appendChild(locationLink);
+    const locationTooltip = el('div', null, 'nearby-place-card');
+    locationTooltip.append(el('strong', 'Ubicación del proyecto'), el('span', this.data.origin.address, 'nearby-place-type'));
+    L.marker([this.data.origin.lat, this.data.origin.lng], { icon: origin, zIndexOffset: 1000, title: 'Proyecto Inmobiliario' }).bindPopup(label).bindTooltip(locationTooltip, { direction:'top', offset:[0,-16], className:'nearby-place-tooltip', opacity:1 }).addTo(this.map);
     this.poiLayer = L.layerGroup().addTo(this.map);
     this.renderPlaces();
   }
@@ -108,7 +138,7 @@ class NearbyMap {
     if (!this.data) return [];
     const normalize = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     const query = normalize(this.get('nearbyQuery').value.trim());
-    return (this.searchResults || this.data.places).filter(p => (this.searchResults || this.category === 'all' || p.category === this.category) && (this.searchResults || !query || normalize(`${p.name} ${categories[p.category] || ''} ${kindLabels[p.kind] || ''} ${p.address || ''} ${p.category==='compras'?'negocios comercios':''}`).includes(query)));
+    return (this.searchResults || this.data.places).filter(p => (this.searchResults || this.category === 'all' || p.category === this.category) && (this.searchResults || !query || normalize(`${p.name} ${categories[p.category] || ''} ${placeType(p)} ${kindLabels[p.kind] || ''} ${p.address || ''} ${p.category==='compras'?'negocios comercios':''}`).includes(query)));
   }
 
   renderPlaces() {
@@ -119,19 +149,51 @@ class NearbyMap {
     const query = this.get('nearbyQuery').value.trim() || (this.category === 'all' ? 'negocios' : categories[this.category]);
     this.get('nearbyGoogleSearch').href = 'https://www.google.com/maps/search/?' + new URLSearchParams({ api: '1', query: `${query} cerca de ${this.data.origin.lat},${this.data.origin.lng}, Río Grande Argentina` });
     this.get('nearbyList').replaceChildren();
-    this.poiLayer.clearLayers(); this.markers.clear();
+    this.renderMarkers(places);
     for (const p of places.slice(0, this.limit)) {
       const button = el('button', null, 'nearby-place'); button.type = 'button'; button.dataset.place = p.id;
-      const copy = el('span'); copy.append(el('strong', p.name), el('small', p.address || categories[p.category] || 'Lugar del mapa'));
+      const copy = el('span'); copy.append(el('strong', p.name), el('small', [placeType(p), p.address].filter(Boolean).join(' · ')));
       const distance = Number.isFinite(p.distance) ? p.distance < 1000 ? `${p.distance} m` : `${(p.distance / 1000).toFixed(1).replace('.', ',')} km` : 'Ver ruta';
       button.append(copy, el('span', distance, 'nearby-distance')); button.onclick = () => this.select(p);
       if (p.id === this.selected?.id) button.classList.add('selected');
       this.get('nearbyList').appendChild(button);
-      const chosen = p.id === this.selected?.id;
-      const marker = window.L.circleMarker([p.lat, p.lng], { radius: chosen ? 9 : 7, color: '#fff', weight: 2, fillColor: chosen ? '#b89b5e' : '#353535', fillOpacity: .95 }).bindTooltip(el('span', p.name)).addTo(this.poiLayer);
-      marker.on('click', () => this.select(p)); this.markers.set(p.id, marker);
     }
     this.get('nearbyMore').hidden = places.length <= this.limit;
+  }
+
+  markerStyle(place, emphasized = false) {
+    const chosen = place.id === this.selected?.id;
+    return { radius:chosen || emphasized ? 9 : 5.5, color:'#fff', weight:2, fillColor:chosen || emphasized ? '#b89b5e' : '#353535', fillOpacity:.95 };
+  }
+
+  renderMarkers(places) {
+    const ids = new Set(places.map(p => p.id));
+    for (const [id, marker] of this.markers) {
+      if (!ids.has(id)) { this.poiLayer.removeLayer(marker); this.markers.delete(id); }
+    }
+    for (const place of places) {
+      let marker = this.markers.get(place.id);
+      if (!marker) {
+        marker = window.L.circleMarker([place.lat, place.lng], this.markerStyle(place))
+          .bindTooltip(placeCard(place), { direction:'top', offset:[0,-9], className:'nearby-place-tooltip', opacity:1 })
+          .bindPopup(placeCard(place), { className:'nearby-place-popup', maxWidth:270 })
+          .addTo(this.poiLayer);
+        marker.on('click', () => this.select(place));
+        marker.on('popupopen', () => marker.closeTooltip());
+        marker.on('mouseover', () => marker.setStyle(this.markerStyle(place, true)));
+        marker.on('mouseout', () => marker.setStyle(this.markerStyle(place)));
+        const target = marker.getElement();
+        target.setAttribute('tabindex', '0'); target.setAttribute('role', 'button');
+        target.setAttribute('aria-label', `${place.name} · ${placeType(place)}`);
+        target.dataset.place = place.id;
+        target.addEventListener('focus', () => { if (!marker.isPopupOpen()) marker.openTooltip(); marker.setStyle(this.markerStyle(place, true)); });
+        target.addEventListener('blur', () => { marker.closeTooltip(); marker.setStyle(this.markerStyle(place)); });
+        target.addEventListener('keydown', event => {
+          if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); marker.openPopup(); this.select(place); }
+        });
+        this.markers.set(place.id, marker);
+      } else marker.setStyle(this.markerStyle(place));
+    }
   }
 
   async select(place) {
@@ -139,7 +201,7 @@ class NearbyMap {
     this.selected = place; this.routes = {}; this.errors = {};
     this.get('nearbySelection').hidden = false;
     this.get('nearbyName').textContent = place.name;
-    this.get('nearbyAddress').textContent = place.address || categories[place.category] || 'Destino del mapa';
+    this.get('nearbyAddress').textContent = [placeType(place), place.address].filter(Boolean).join(' · ');
     this.renderPlaces(); this.renderRoute();
     const origin = this.data.origin;
     this.map.fitBounds([[origin.lat, origin.lng], [place.lat, place.lng]], { padding: [45, 45], maxZoom: 17 });
@@ -196,7 +258,15 @@ class NearbyMap {
       if (!r.ok) throw new Error('Búsqueda no disponible');
       const results = await r.json();
       if (token !== this.searchToken) return;
-      this.searchResults = results.map(p => ({ id: `search-${p.place_id}`, name: p.name || p.display_name.split(',')[0], address: p.display_name.split(',').slice(1, 3).join(',').trim(), lat: Number(p.lat), lng: Number(p.lon), category: 'servicios' })).filter(p => Number.isFinite(p.lat) && Number.isFinite(p.lng));
+      this.searchResults = results.map(p => {
+        const kind = p.type, group = p.category || p.class;
+        const category = ['restaurant','cafe','fast_food','bar','pub','ice_cream','food_court'].includes(kind) ? 'gastronomia'
+          : ['pharmacy','hospital','clinic','doctors','dentist','veterinary'].includes(kind) ? 'salud'
+          : ['school','college','university','kindergarten','library'].includes(kind) ? 'educacion'
+          : ['park','playground','museum','attraction','viewpoint','gallery','sports_centre','stadium','fitness_centre'].includes(kind) ? 'paseos'
+          : group === 'shop' ? 'compras' : ['bank','atm','post_office','townhall','police','courthouse','community_centre','fuel'].includes(kind) ? 'servicios' : 'other';
+        return { id:`search-${p.place_id}`, name:p.name || p.display_name.split(',')[0], address:p.display_name.split(',').slice(1,3).join(',').trim(), lat:Number(p.lat), lng:Number(p.lon), kind, category };
+      }).filter(p => Number.isFinite(p.lat) && Number.isFinite(p.lng));
       this.renderPlaces();
     } catch (error) {
       if (token !== this.searchToken) return;
