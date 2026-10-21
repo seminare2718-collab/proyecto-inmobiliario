@@ -112,16 +112,12 @@
 #buildingTransition.motion-ready #buildingVideo{opacity:1}
 #buildingTransition.motion-ready:not(.building-fallback) #buildingFallback{opacity:0}
 #buildingTransition.building-fallback #buildingFallback{opacity:1}
-#shareQr{width:min(460px,92vw);max-height:92dvh;overflow:auto;text-align:center;padding:35px 28px 28px}
-#shareQr h2{font-size:1.55rem;font-weight:400;line-height:1.25;margin:10px 0 18px}
-#shareQr>p:not(.eyebrow){font-size:.85rem;color:#777;line-height:1.5;margin:12px 0 22px}
-#homeQr{display:block;width:min(294px,100%);height:auto;aspect-ratio:1;margin:auto;background:white}
-.qr-downloads{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;font-size:.8rem}
-.qr-downloads a{color:#444}.qr-downloads .accent{color:#fff;text-decoration:none}
-.qr-home-link{display:inline-block;color:#777;font-size:.75rem;margin-top:24px}
 @keyframes departureStill{0%,12%{opacity:1}24%,100%{opacity:0}}
 @keyframes renderCloudPass{0%{opacity:0;transform:scale(1.2)}12%,23%{opacity:1;transform:scale(1.4)}52%,100%{opacity:0;transform:scale(2)}}
 @keyframes softArrival{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(1.04)}}
-@media(max-width:650px){.arrival-still>img{object-fit:contain}#intro,#buildingTransition,#arrivalStart,.arrival-still{background:linear-gradient(#bebebe,#797979)}#shareQr{padding:30px 20px 24px}#shareQr h2{font-size:1.35rem}}
+@media(max-width:650px){.arrival-still>img{object-fit:contain}#intro,#buildingTransition,#arrivalStart,.arrival-still{background:linear-gradient(#bebebe,#797979)}}
 
 #buildingTransition.motion-ready #buildingVideo{transition:opacity .2s linear!important}
+
+/* A slightly quicker day/night blend on both exterior screens. */
+#exteriorStage>img{transition:opacity 2.2s}
