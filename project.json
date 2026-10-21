@@ -285,7 +285,7 @@
       "3": "assets/site-floor-context-3.webp",
       "4": "assets/site-floor-context-4.webp"
     },
-    "arrivalVideo": "assets/site-arrival.webm",
+    "arrivalVideo": "assets/arrival-render-20261021.mp4",
     "cover": {
       "day": "assets/render-20261007-front-day.webp",
       "night": "assets/render-20261007-front-night.webp"
@@ -441,6 +441,24 @@
       "navigation": "assets/street-walk-20261019.json",
       "source": "ENTORNO_SEMINARE.skp",
       "description": "Recorrido 3D a nivel de calle por el entorno reconstruido del proyecto."
+    },
+    "buildingEntryVideos": {
+      "day": [
+        "assets/entry-render-20261021-day-0.mp4",
+        "assets/entry-render-20261021-day-1.mp4",
+        "assets/entry-render-20261021-day-2.mp4",
+        "assets/entry-render-20261021-day-3.mp4",
+        "assets/entry-render-20261021-day-4.mp4",
+        "assets/entry-render-20261021-day-5.mp4"
+      ],
+      "night": [
+        "assets/entry-render-20261021-night-0.mp4",
+        "assets/entry-render-20261021-night-1.mp4",
+        "assets/entry-render-20261021-night-2.mp4",
+        "assets/entry-render-20261021-night-3.mp4",
+        "assets/entry-render-20261021-night-4.mp4",
+        "assets/entry-render-20261021-night-5.mp4"
+      ]
     }
   },
   "mapData": "assets/nearby-places-20261019.json"
