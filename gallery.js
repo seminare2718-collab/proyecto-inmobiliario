@@ -1,12 +1,10 @@
 const apartments = [
-  ['dormitorio-01.webp', 'Dormitorio · vista desde el acceso'],
-  ['dormitorio-02.webp', 'Dormitorio · placard'],
-  ['dormitorio-03.webp', 'Dormitorio · ventana y calefactor'],
-  ['bano-01.webp', 'Baño · ducha'],
+  ['dormitorio-02-v2.webp', 'Dormitorio · placard'],
+  ['dormitorio-03-v2.webp', 'Dormitorio · ventana y calefactor'],
+  ['bano-01-v2.webp', 'Baño · ducha'],
   ['bano-02.webp', 'Baño · lavamanos'],
   ['cocina-01.webp', 'Cocina · mesada'],
   ['cocina-02.webp', 'Cocina · vista desde el estar'],
-  ['estar-01.webp', 'Estar · hacia el balcón'],
   ['estar-02.webp', 'Estar y comedor'],
   ['estar-03.webp', 'Estar · salida al balcón']
 ];
@@ -24,8 +22,7 @@ export function showGallery(container, isCommercial) {
   const layout = document.createElement('div'); layout.className = 'interior-gallery';
   const heading = document.createElement('div'); heading.className = 'interior-gallery-heading';
   const title = document.createElement('h3'); title.textContent = isCommercial ? 'Interiores del local' : 'Interiores del departamento';
-  const note = document.createElement('p'); note.textContent = 'Imágenes ilustrativas basadas en el modelo. Los detalles pueden variar.';
-  heading.append(title, note);
+  heading.append(title);
   const figure = document.createElement('figure'); figure.className = 'interior-gallery-figure';
   const image = document.createElement('img'); image.decoding = 'async';
   const caption = document.createElement('figcaption');
