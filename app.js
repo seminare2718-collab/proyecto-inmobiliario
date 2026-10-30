@@ -1,6 +1,6 @@
 import { initContact } from './contact.js?v=20261030';
 import { openMaps, closeMaps } from './nearby-map.js?v=20261029';
-import { showGallery } from './gallery.js?v=20261030';
+import { showGallery } from './gallery.js?v=ducha-20261030';
 const $=id=>document.getElementById(id);const NS='http://www.w3.org/2000/svg';const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 let state='home',floor=4,selected=null,hovered=null,view=0,mode='day',introTimer=null,cycleTimer=null,activeTab='render',project={units:[]};
 const high=[

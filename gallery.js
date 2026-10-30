@@ -1,7 +1,7 @@
 const apartments = [
   ['dormitorio-02-v2.webp', 'Dormitorio · placard'],
   ['dormitorio-03-v2.webp', 'Dormitorio · ventana y calefactor'],
-  ['bano-01-v2.webp', 'Baño · ducha'],
+  ['bano-ducha-negra.webp', 'Baño · ducha'],
   ['bano-02.webp', 'Baño · lavamanos'],
   ['cocina-01.webp', 'Cocina · mesada'],
   ['cocina-02.webp', 'Cocina · vista desde el estar'],
