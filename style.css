@@ -70,4 +70,8 @@ button:focus-visible,a:focus-visible,[role=button]:focus-visible{outline-color:v
 .brand-mark{width:100%;aspect-ratio:412/290;overflow:hidden;filter:drop-shadow(0 1px 5px #ffffffa6)}
 .brand-mark .brand-logo{width:100%;height:auto;max-height:none;margin:0;filter:none}
 .brand-descriptor{margin:5px -14px 0;color:#fff;font-size:9.5px;font-weight:600;letter-spacing:.15em;line-height:1.55;text-shadow:0 1px 5px #000b}
+.brand-lockup{width:min(240px,48vw);margin:0 auto 18px}
+.brand-mark{padding:9px 12px;aspect-ratio:auto;border-radius:14px;background:#f7f6f1ed;filter:none;box-shadow:0 4px 24px #0004}
+.brand-mark .brand-logo{display:block;width:100%;height:auto;max-height:none;object-fit:contain;aspect-ratio:auto}
+.brand-descriptor{font-size:10px;letter-spacing:.16em;text-shadow:0 2px 7px #000}
 @media(max-width:650px){#buildingEntry{font-size:.72rem;padding:6px 10px;min-height:34px}.brand-descriptor{font-size:8px;letter-spacing:.11em}}

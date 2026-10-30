@@ -121,3 +121,36 @@
 
 /* A slightly quicker day/night blend on both exterior screens. */
 #exteriorStage>img{transition:opacity 2.2s}
+
+/* Compact introduction to the existing location map. */
+.nearby-heading{position:relative;min-height:118px;padding:18px 24px;border-radius:18px;overflow:hidden;color:#fff;background:linear-gradient(90deg,rgba(23,23,22,.88),rgba(30,29,26,.64)),url('assets/render-20261007-exterior-day-0.webp') center 51%/cover}
+.nearby-heading .eyebrow{color:#e0d1a9}
+.nearby-heading h2{font-size:clamp(21px,2.2vw,30px);color:#fff}
+.nearby-heading .nearby-intro{margin:5px 0 0;color:#f0efeb;font-size:13px;line-height:1.4}
+.nearby-heading .nearby-location{margin:5px 0 0;color:#ddd;font-size:11px}
+
+/* The images remain illustrative, and can be browsed with touch or keyboard. */
+#galleryPanel{height:100%;min-height:0;overflow:auto;background:#fff}
+.interior-gallery{height:100%;min-height:390px;display:flex;flex-direction:column;gap:9px;padding:16px}
+.interior-gallery-heading h3{margin:0;font-size:16px;font-weight:500;color:#333}
+.interior-gallery-heading p{margin:5px 0 0;font-size:11px;line-height:1.4;color:#777}
+.interior-gallery-figure{position:relative;flex:1;min-height:180px;overflow:hidden;margin:0;background:#e9e7e2;border-radius:12px}
+.interior-gallery-figure>img{width:100%;height:100%;position:absolute;inset:0;object-fit:contain}
+.interior-gallery-figure figcaption{position:absolute;left:12px;bottom:12px;max-width:65%;padding:7px 10px;border-radius:8px;background:#242424c9;color:#fff;font-size:11px}
+.interior-gallery-controls{position:absolute;right:12px;bottom:10px;display:flex;align-items:center;gap:7px;background:#252525d9;color:white;padding:4px;border-radius:24px;font-size:11px}
+.interior-gallery-controls button{width:32px;height:32px;border-radius:50%;font-size:23px;line-height:1;background:#fff;color:#333}
+.interior-gallery-controls span{min-width:38px;text-align:center}
+.interior-gallery-thumbnails{display:flex;gap:6px;overflow-x:auto;flex-shrink:0;padding:2px 1px 5px;scrollbar-width:thin}
+.interior-gallery-thumbnails button{width:72px;height:47px;flex:none;padding:0;overflow:hidden;border:2px solid transparent;border-radius:6px;background:#eee}
+.interior-gallery-thumbnails button[aria-pressed=true]{border-color:var(--gold)}
+.interior-gallery-thumbnails img{width:100%;height:100%;display:block;object-fit:cover}
+.interior-gallery button:focus-visible,.menu-email:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.menu-email{display:inline-block;margin-top:12px;color:#333;overflow-wrap:anywhere}
+@media(max-width:650px){
+ .nearby-heading{min-height:113px;padding:16px;margin-bottom:12px}
+ .nearby-heading h2{font-size:21px;line-height:1.15}
+ .nearby-heading .nearby-intro{font-size:11px}.nearby-heading .nearby-location{font-size:10px}
+ #details:has(#galleryPanel:not([hidden])) #detailMedia{height:62dvh;min-height:390px}
+ .interior-gallery{padding:10px;min-height:380px;gap:7px}
+ .interior-gallery-figure{min-height:180px}.interior-gallery-thumbnails button{width:62px;height:42px}
+}

@@ -1,5 +1,5 @@
-const categories = { all: 'Todos', compras: 'Compras', gastronomia: 'Gastronomía', salud: 'Salud', educacion: 'Educación', paseos: 'Paseos', servicios: 'Servicios' };
-const kindLabels = { supermarket:'supermercado almacén', convenience:'almacén kiosco', pharmacy:'farmacia', restaurant:'restaurante comida', cafe:'café cafetería', fast_food:'comida rápida', bar:'bar bebidas', bakery:'panadería', hospital:'hospital', school:'escuela colegio', university:'universidad', bank:'banco', atm:'cajero banco', clothes:'ropa indumentaria', furniture:'muebles', museum:'museo', park:'parque plaza', car:'autos concesionaria', car_repair:'taller autos', bicycle:'bicicletas', hairdresser:'peluquería', hardware:'ferretería', electronics:'electrónica', shoes:'zapatos calzado' };
+const categories = { all: 'Todos', compras: 'Compras', gastronomia: 'Gastronomía', salud: 'Salud y bienestar', educacion: 'Educación', paseos: 'Paseos', servicios: 'Servicios' };
+const kindLabels = { supermarket:'supermercado almacén', convenience:'almacén kiosco', pharmacy:'farmacia', fitness_centre:'gimnasio ejercicio bienestar', restaurant:'restaurante comida', cafe:'café cafetería', fast_food:'comida rápida', bar:'bar bebidas', bakery:'panadería', hospital:'hospital', school:'escuela colegio', university:'universidad', bank:'banco', atm:'cajero banco', clothes:'ropa indumentaria', furniture:'muebles', museum:'museo', park:'parque plaza', car:'autos concesionaria', car_repair:'taller autos', bicycle:'bicicletas', hairdresser:'peluquería', hardware:'ferretería', electronics:'electrónica', shoes:'zapatos calzado' };
 const placeTypes = {
   supermarket:'Supermercado', convenience:'Almacén / kiosco', pharmacy:'Farmacia',
   restaurant:'Restaurante', cafe:'Cafetería', fast_food:'Comida rápida', bar:'Bar', pub:'Bar',
@@ -72,7 +72,7 @@ class NearbyMap {
     this.token = 0;
     this.searchToken = 0;
     this.markers = new Map();
-    root.innerHTML = `<div class="nearby-heading"><div><p class="eyebrow">UBICACIÓN Y CERCANÍA</p><h2>Todo, cerca del proyecto.</h2><p id="nearbyLocation" class="nearby-location"></p></div><p>Pasá el cursor por un lugar o tocá para explorarlo.</p></div>
+    root.innerHTML = `<div class="nearby-heading"><div><p class="eyebrow">RÍO GRANDE · TIERRA DEL FUEGO</p><h2>Una ubicación que conecta todo</h2><p class="nearby-intro">Conocé los servicios, comercios y puntos de interés cercanos al proyecto</p><p id="nearbyLocation" class="nearby-location"></p></div></div>
       <div class="nearby-layout"><aside class="nearby-sidebar"><form id="nearbySearch"><label for="nearbyQuery">¿Qué estás buscando?</label><div class="nearby-search-row"><input id="nearbyQuery" type="search" autocomplete="off" placeholder="Un café, una farmacia, un negocio…"><button type="submit">Buscar</button></div></form>
       <div id="nearbyCategories" class="nearby-categories" aria-label="Tipo de lugar"></div><p id="nearbyMessage" role="status" class="nearby-message"></p>
       <section id="nearbySelection" class="nearby-selection" aria-label="Recorridos al lugar elegido" hidden><span class="eyebrow">DESDE EL PROYECTO</span><h3 id="nearbyName"></h3><p id="nearbyAddress"></p><div id="nearbyModes" class="nearby-modes"></div><p id="nearbyRouteSummary" aria-live="polite"></p><a id="nearbyGoogle" target="_blank" rel="noopener">Abrir recorrido en Google Maps ↗</a><small>Tiempos estimados, sin tráfico en vivo.</small></section>
@@ -261,9 +261,9 @@ class NearbyMap {
       this.searchResults = results.map(p => {
         const kind = p.type, group = p.category || p.class;
         const category = ['restaurant','cafe','fast_food','bar','pub','ice_cream','food_court'].includes(kind) ? 'gastronomia'
-          : ['pharmacy','hospital','clinic','doctors','dentist','veterinary'].includes(kind) ? 'salud'
+          : ['pharmacy','hospital','clinic','doctors','dentist','veterinary','fitness_centre','gym'].includes(kind) ? 'salud'
           : ['school','college','university','kindergarten','library'].includes(kind) ? 'educacion'
-          : ['park','playground','museum','attraction','viewpoint','gallery','sports_centre','stadium','fitness_centre'].includes(kind) ? 'paseos'
+          : ['park','playground','museum','attraction','viewpoint','gallery','sports_centre','stadium'].includes(kind) ? 'paseos'
           : group === 'shop' ? 'compras' : ['bank','atm','post_office','townhall','police','courthouse','community_centre','fuel'].includes(kind) ? 'servicios' : 'other';
         return { id:`search-${p.place_id}`, name:p.name || p.display_name.split(',')[0], address:p.display_name.split(',').slice(1,3).join(',').trim(), lat:Number(p.lat), lng:Number(p.lon), kind, category };
       }).filter(p => Number.isFinite(p.lat) && Number.isFinite(p.lng));

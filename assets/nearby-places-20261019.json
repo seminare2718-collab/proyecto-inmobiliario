@@ -31,6 +31,17 @@
       "osmUrl": "https://www.openstreetmap.org/way/828268923"
     },
     {
+      "id": "grido-lasserre",
+      "name": "Grido Helados",
+      "category": "gastronomia",
+      "lat": -53.7852301,
+      "lng": -67.6964923,
+      "distance": 106,
+      "kind": "ice_cream",
+      "address": "Augusto Lasserre 424",
+      "referenceUrl": "https://www.google.com/maps/place/Grido+helado/data=!4m2!3m1!1s0xbc4b177f8ccbbc51:0xf3d83139fc08b68"
+    },
+    {
       "id": "way/904783178",
       "name": "Rock Mania",
       "category": "compras",
@@ -1107,6 +1118,39 @@
       "kind": "clothes",
       "address": "",
       "osmUrl": "https://www.openstreetmap.org/node/7359276744"
+    },
+    {
+      "id": "cpet",
+      "name": "CPET · Ing. Fabio Carlos Reiss",
+      "category": "educacion",
+      "lat": -53.7868229,
+      "lng": -67.7026773,
+      "distance": 500,
+      "kind": "school",
+      "address": "Av. Manuel Belgrano 777",
+      "referenceUrl": "https://www.google.com/maps/place/CPET+R%C3%ADo+Grande+Ingeniero+Fabio+Carlos+Reiss/data=!4m2!3m1!1s0xbc4b165d0095c46d:0xe1d8deef4a5b43da"
+    },
+    {
+      "id": "seven-gym",
+      "name": "Seven Gym",
+      "category": "salud",
+      "lat": -53.7807586,
+      "lng": -67.7018248,
+      "distance": 529,
+      "kind": "fitness_centre",
+      "address": "J. B. Thorne 335",
+      "referenceUrl": "https://www.google.com/maps/place/Seven+Gym/data=!4m2!3m1!1s0xbc4b170045837351:0x474e020ae18ca10c"
+    },
+    {
+      "id": "power-gym",
+      "name": "Power GYM Team",
+      "category": "salud",
+      "lat": -53.7844873,
+      "lng": -67.7082794,
+      "distance": 780,
+      "kind": "fitness_centre",
+      "address": "Perito Moreno 900–998",
+      "referenceUrl": "https://www.google.com/maps/place/Power+GYM+Team/data=!4m2!3m1!1s0xbc4b1642a68e7893:0xcff5d4edba00f691"
     }
   ],
   "source": "© OpenStreetMap contributors",
