@@ -1,18 +1,18 @@
 const apartments = [
   ['dormitorio-02-v2.webp', 'Dormitorio · placard'],
   ['dormitorio-03-v2.webp', 'Dormitorio · ventana y calefactor'],
-  ['bano-ducha-negra.webp', 'Baño · ducha'],
-  ['bano-02.webp', 'Baño · lavamanos'],
-  ['cocina-01.webp', 'Cocina · mesada'],
-  ['cocina-02.webp', 'Cocina · vista desde el estar'],
-  ['estar-02.webp', 'Estar y comedor'],
-  ['estar-03.webp', 'Estar · salida al balcón']
+  ['bano-ducha-20261110.png', 'Baño · ducha'],
+  ['bano-lavamanos-20261110.png', 'Baño · lavamanos'],
+  ['cocina-mesada-20261110.png', 'Cocina · mesada'],
+  ['cocina-estar-20261110.png', 'Cocina · vista desde el estar'],
+  ['estar-comedor-20261110.png', 'Estar y comedor'],
+  ['estar-balcon-20261110.png', 'Estar · salida al balcón']
 ];
 const commercial = [
-  ['local-01.webp', 'Local comercial · hacia el office'],
-  ['local-02.webp', 'Local comercial · hacia el ingreso'],
+  ['local-office-20261110.png', 'Local comercial · hacia el office'],
+  ['local-ingreso-20261110.png', 'Local comercial · hacia el ingreso'],
   ['office-01.webp', 'Office · mesada'],
-  ['local-bano-01.webp', 'Baño del local']
+  ['local-bano-20261110.png', 'Baño del local']
 ];
 
 export function showGallery(container, isCommercial) {

@@ -1,6 +1,6 @@
 {
   "name": "Proyecto Inmobiliario",
-  "address": "Pres. Bernardino Rivadavia 417, Río Grande, Tierra del Fuego, Argentina",
+  "address": "Pres. Bernardino Rivadavia 417, RÃ­o Grande, Tierra del Fuego, Argentina",
   "availabilityEndpoint": null,
   "units": [
     {
@@ -12,11 +12,13 @@
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
-      "kitchen": "Sí",
-      "parking": true,
+      "kitchen": true,
+      "parking": false,
       "coveredArea": null,
       "balcony": true,
-      "laundry": null
+      "laundry": null,
+      "washer": true,
+      "dryer": true
     },
     {
       "id": "1B",
@@ -27,11 +29,13 @@
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
-      "kitchen": "Sí",
-      "parking": true,
+      "kitchen": true,
+      "parking": false,
       "coveredArea": null,
       "balcony": true,
-      "laundry": null
+      "laundry": null,
+      "washer": true,
+      "dryer": true
     },
     {
       "id": "1C",
@@ -42,11 +46,13 @@
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
-      "kitchen": "Sí",
-      "parking": true,
+      "kitchen": true,
+      "parking": false,
       "coveredArea": null,
       "balcony": true,
-      "laundry": null
+      "laundry": null,
+      "washer": true,
+      "dryer": true
     },
     {
       "id": "1D",
@@ -57,11 +63,13 @@
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
-      "kitchen": "Sí",
-      "parking": true,
+      "kitchen": true,
+      "parking": false,
       "coveredArea": null,
       "balcony": true,
-      "laundry": null
+      "laundry": null,
+      "washer": true,
+      "dryer": true
     },
     {
       "id": "2A",
@@ -72,11 +80,13 @@
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
-      "kitchen": "Sí",
-      "parking": true,
+      "kitchen": true,
+      "parking": false,
       "coveredArea": null,
       "balcony": true,
-      "laundry": null
+      "laundry": null,
+      "washer": true,
+      "dryer": true
     },
     {
       "id": "2B",
@@ -87,11 +97,13 @@
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
-      "kitchen": "Sí",
-      "parking": true,
+      "kitchen": true,
+      "parking": false,
       "coveredArea": null,
       "balcony": true,
-      "laundry": null
+      "laundry": null,
+      "washer": true,
+      "dryer": true
     },
     {
       "id": "2C",
@@ -102,11 +114,13 @@
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
-      "kitchen": "Sí",
-      "parking": true,
+      "kitchen": true,
+      "parking": false,
       "coveredArea": null,
       "balcony": true,
-      "laundry": null
+      "laundry": null,
+      "washer": true,
+      "dryer": true
     },
     {
       "id": "2D",
@@ -117,11 +131,13 @@
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
-      "kitchen": "Sí",
-      "parking": true,
+      "kitchen": true,
+      "parking": false,
       "coveredArea": null,
       "balcony": true,
-      "laundry": null
+      "laundry": null,
+      "washer": true,
+      "dryer": true
     },
     {
       "id": "3A",
@@ -132,11 +148,13 @@
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
-      "kitchen": "Sí",
+      "kitchen": true,
       "parking": true,
       "coveredArea": null,
       "balcony": true,
-      "laundry": null
+      "laundry": null,
+      "washer": true,
+      "dryer": true
     },
     {
       "id": "3B",
@@ -147,11 +165,13 @@
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
-      "kitchen": "Sí",
+      "kitchen": true,
       "parking": true,
       "coveredArea": null,
       "balcony": true,
-      "laundry": null
+      "laundry": null,
+      "washer": true,
+      "dryer": true
     },
     {
       "id": "3C",
@@ -162,11 +182,13 @@
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
-      "kitchen": "Sí",
+      "kitchen": true,
       "parking": true,
       "coveredArea": null,
       "balcony": true,
-      "laundry": null
+      "laundry": null,
+      "washer": true,
+      "dryer": true
     },
     {
       "id": "3D",
@@ -177,11 +199,13 @@
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
-      "kitchen": "Sí",
+      "kitchen": true,
       "parking": true,
       "coveredArea": null,
       "balcony": true,
-      "laundry": null
+      "laundry": null,
+      "washer": true,
+      "dryer": true
     },
     {
       "id": "4A",
@@ -192,11 +216,13 @@
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
-      "kitchen": "Sí",
+      "kitchen": true,
       "parking": true,
       "coveredArea": null,
       "balcony": true,
-      "laundry": null
+      "laundry": null,
+      "washer": true,
+      "dryer": true
     },
     {
       "id": "4B",
@@ -207,11 +233,13 @@
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
-      "kitchen": "Sí",
+      "kitchen": true,
       "parking": true,
       "coveredArea": null,
       "balcony": true,
-      "laundry": null
+      "laundry": null,
+      "washer": true,
+      "dryer": true
     },
     {
       "id": "4C",
@@ -222,11 +250,13 @@
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
-      "kitchen": "Sí",
+      "kitchen": true,
       "parking": true,
       "coveredArea": null,
       "balcony": true,
-      "laundry": null
+      "laundry": null,
+      "washer": true,
+      "dryer": true
     },
     {
       "id": "4D",
@@ -237,11 +267,13 @@
       "rooms": 2,
       "bedrooms": 1,
       "bathrooms": 1,
-      "kitchen": "Sí",
+      "kitchen": true,
       "parking": true,
       "coveredArea": null,
       "balcony": true,
-      "laundry": null
+      "laundry": null,
+      "washer": true,
+      "dryer": true
     },
     {
       "id": "PB-1",
@@ -255,8 +287,8 @@
       "bathrooms": 1,
       "balcony": false,
       "kitchen": "Office",
-      "laundry": null,
-      "parking": true
+      "parking": false,
+      "heating": "Losa radiante"
     },
     {
       "id": "PB-2",
@@ -270,8 +302,8 @@
       "bathrooms": 1,
       "balcony": false,
       "kitchen": "Office",
-      "laundry": null,
-      "parking": true
+      "parking": false,
+      "heating": "Losa radiante"
     }
   ],
   "availabilityMode": "demo",
@@ -319,115 +351,119 @@
     "balconyViews": {
       "1A": {
         "src": "assets/balcony-urban-20261019-1A.webp",
-        "orientation": "Frente hacia Mackinlay · Orientación al mar",
+        "orientation": "Frente hacia Mackinlay Â· OrientaciÃ³n al mar",
         "modelFloorElevation": 5.381,
         "eyeHeight": 1.6,
         "updated": "2026-10-19"
       },
       "1B": {
-        "src": "assets/balcony-urban-20261019-1B.webp",
-        "orientation": "Frente hacia Mackinlay · Orientación al mar",
+        "src": "assets/views-20261110/1B.png",
+        "orientation": "Frente hacia Mackinlay Â· OrientaciÃ³n al mar",
         "modelFloorElevation": 5.381,
         "eyeHeight": 1.6,
         "updated": "2026-10-19"
       },
       "1C": {
         "src": "assets/balcony-urban-20261019-1C.webp",
-        "orientation": "Contrafrente · Orientación hacia la ciudad",
+        "orientation": "Contrafrente Â· OrientaciÃ³n hacia la ciudad",
         "modelFloorElevation": 5.381,
         "eyeHeight": 1.6,
         "updated": "2026-10-19"
       },
       "1D": {
         "src": "assets/balcony-urban-20261019-1D.webp",
-        "orientation": "Contrafrente · Orientación hacia la ciudad",
+        "orientation": "Contrafrente Â· OrientaciÃ³n hacia la ciudad",
         "modelFloorElevation": 5.381,
         "eyeHeight": 1.6,
         "updated": "2026-10-19"
       },
       "2A": {
         "src": "assets/balcony-urban-20261019-2A.webp",
-        "orientation": "Frente hacia Mackinlay · Orientación al mar",
+        "orientation": "Frente hacia Mackinlay Â· OrientaciÃ³n al mar",
         "modelFloorElevation": 8.381,
         "eyeHeight": 1.6,
         "updated": "2026-10-19"
       },
       "2B": {
-        "src": "assets/balcony-urban-20261019-2B.webp",
-        "orientation": "Frente hacia Mackinlay · Orientación al mar",
+        "src": "assets/views-20261110/2B.png",
+        "orientation": "Frente hacia Mackinlay Â· OrientaciÃ³n al mar",
         "modelFloorElevation": 8.381,
         "eyeHeight": 1.6,
         "updated": "2026-10-19"
       },
       "2C": {
         "src": "assets/balcony-urban-20261019-2C.webp",
-        "orientation": "Contrafrente · Orientación hacia la ciudad",
+        "orientation": "Contrafrente Â· OrientaciÃ³n hacia la ciudad",
         "modelFloorElevation": 8.381,
         "eyeHeight": 1.6,
         "updated": "2026-10-19"
       },
       "2D": {
         "src": "assets/balcony-urban-20261019-2D.webp",
-        "orientation": "Contrafrente · Orientación hacia la ciudad",
+        "orientation": "Contrafrente Â· OrientaciÃ³n hacia la ciudad",
         "modelFloorElevation": 8.381,
         "eyeHeight": 1.6,
         "updated": "2026-10-19"
       },
       "3A": {
         "src": "assets/balcony-urban-20261019-3A.webp",
-        "orientation": "Frente hacia Mackinlay · Orientación al mar",
+        "orientation": "Frente hacia Mackinlay Â· OrientaciÃ³n al mar",
         "modelFloorElevation": 11.381,
         "eyeHeight": 1.6,
         "updated": "2026-10-19"
       },
       "3B": {
-        "src": "assets/balcony-urban-20261019-3B.webp",
-        "orientation": "Frente hacia Mackinlay · Orientación al mar",
+        "src": "assets/views-20261110/3B.png",
+        "orientation": "Frente hacia Mackinlay Â· OrientaciÃ³n al mar",
         "modelFloorElevation": 11.381,
         "eyeHeight": 1.6,
         "updated": "2026-10-19"
       },
       "3C": {
         "src": "assets/balcony-urban-20261019-3C.webp",
-        "orientation": "Contrafrente · Orientación hacia la ciudad",
+        "orientation": "Contrafrente Â· OrientaciÃ³n hacia la ciudad",
         "modelFloorElevation": 11.381,
         "eyeHeight": 1.6,
         "updated": "2026-10-19"
       },
       "3D": {
         "src": "assets/balcony-urban-20261019-3D.webp",
-        "orientation": "Contrafrente · Orientación hacia la ciudad",
+        "orientation": "Contrafrente Â· OrientaciÃ³n hacia la ciudad",
         "modelFloorElevation": 11.381,
         "eyeHeight": 1.6,
         "updated": "2026-10-19"
       },
       "4A": {
         "src": "assets/balcony-urban-20261019-4A.webp",
-        "orientation": "Frente hacia Mackinlay · Orientación al mar",
+        "orientation": "Frente hacia Mackinlay Â· OrientaciÃ³n al mar",
         "modelFloorElevation": 14.381,
         "eyeHeight": 1.6,
         "updated": "2026-10-19"
       },
       "4B": {
-        "src": "assets/balcony-urban-20261019-4B.webp",
-        "orientation": "Frente hacia Mackinlay · Orientación al mar",
+        "src": "assets/views-20261110/4B.png",
+        "orientation": "Frente hacia Mackinlay Â· OrientaciÃ³n al mar",
         "modelFloorElevation": 14.381,
         "eyeHeight": 1.6,
         "updated": "2026-10-19"
       },
       "4C": {
         "src": "assets/balcony-urban-20261019-4C.webp",
-        "orientation": "Contrafrente · Orientación hacia la ciudad",
+        "orientation": "Contrafrente Â· OrientaciÃ³n hacia la ciudad",
         "modelFloorElevation": 14.381,
         "eyeHeight": 1.6,
         "updated": "2026-10-19"
       },
       "4D": {
         "src": "assets/balcony-urban-20261019-4D.webp",
-        "orientation": "Contrafrente · Orientación hacia la ciudad",
+        "orientation": "Contrafrente Â· OrientaciÃ³n hacia la ciudad",
         "modelFloorElevation": 14.381,
         "eyeHeight": 1.6,
         "updated": "2026-10-19"
+      },
+      "PB-2": {
+        "src": "assets/views-20261110/PB-2.png",
+        "orientation": "Vista exterior desde el local"
       }
     },
     "realEnvironment": {
@@ -459,6 +495,13 @@
         "assets/entry-render-20261021-night-4.mp4",
         "assets/entry-render-20261021-night-5.mp4"
       ]
+    },
+    "floorPlans": {
+      "0": "assets/plans-20261110/00_Planta_baja.png",
+      "1": "assets/plans-20261110/01_Primer_piso.png",
+      "2": "assets/plans-20261110/02_Segundo_piso.png",
+      "3": "assets/plans-20261110/03_Tercer_piso.png",
+      "4": "assets/plans-20261110/04_Cuarto_piso.png"
     }
   },
   "mapData": "assets/nearby-places-20261019.json"
