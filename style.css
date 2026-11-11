@@ -91,3 +91,5 @@ button:focus-visible,a:focus-visible,[role=button]:focus-visible{outline-color:v
 [data-screen=floors] #floorBackdrop{background-image:url("assets/terreno-completo-20261111.png")!important;background-size:cover;background-position:center;background-repeat:no-repeat}
 
 [data-screen=floors] #floorBackdrop{background-color:#777b68;background-repeat:no-repeat}
+
+#floorStage{inset:85px 90px 30px 12px} #floorBackdrop{transition:background-size .65s ease,background-position .65s ease} #plan{transform:none!important} @media(max-width:700px){#floorStage{inset:120px 54px 60px 0}} @media(prefers-reduced-motion:reduce){#floorBackdrop{transition:none}}
