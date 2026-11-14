@@ -154,3 +154,28 @@
  .interior-gallery{padding:10px;min-height:380px;gap:7px}
  .interior-gallery-figure{min-height:180px}.interior-gallery-thumbnails button{width:62px;height:42px}
 }
+
+/* November 14: final exteriors and shared, geometry-preserving transitions. */
+.seminare-wordmark{background:none;box-shadow:none;color:white;text-shadow:0 2px 8px #000c,0 0 24px #0007}
+.seminare-wordmark strong{display:block;font:700 clamp(42px,6vw,76px)/1.1 Georgia,serif;letter-spacing:.09em}
+.seminare-wordmark span{display:block;margin-top:12px;font-size:clamp(14px,1.7vw,20px);font-weight:600;letter-spacing:.06em}
+#welcome h1{font-size:clamp(17px,2vw,25px);letter-spacing:.07em;margin:26px 0 28px;line-height:1.4;font-weight:500;text-transform:none}
+[data-screen=home] #nightImage{filter:brightness(.5) saturate(.75)}
+[data-screen=home] footer{display:none}
+.entering #exteriorStage{animation:none!important}
+#intro{background:transparent;overflow:hidden}
+#arrivalStart,#arrivalVideo{display:none!important}
+#intro #arrivalFallback{display:block;z-index:1;object-fit:cover;animation:satelliteDescent 3.3s cubic-bezier(.3,.05,.3,1) both!important}
+.entering #intro .arrival-clouds{display:block;z-index:2;animation:newCloudPass 3.3s ease both!important;background:radial-gradient(ellipse at 30% 40%,white 0,transparent 65%),radial-gradient(ellipse at 75% 65%,#fff 0,transparent 62%)}
+.satellite-credit{position:absolute;bottom:12px;right:12px;z-index:3;font-size:10px;color:white;pointer-events:auto;text-shadow:0 1px 3px black;animation:satelliteCredit 3.3s both}
+@keyframes satelliteDescent{0%{opacity:1;transform:scale(1)}60%{opacity:1;transform:scale(3)}90%,100%{opacity:0;transform:scale(4)}}
+@keyframes newCloudPass{0%{opacity:1;transform:scale(.8)}25%{opacity:.1}55%,65%{opacity:1}100%{opacity:0;transform:scale(2)}}
+@keyframes satelliteCredit{0%,65%{opacity:1}85%,100%{opacity:0}}
+.view-change{position:absolute;inset:0;z-index:17;pointer-events:none;background:#bebebe}
+.view-change>img{position:absolute;width:100%;height:100%;object-fit:cover}
+#buildingTransition.single-entry{background:transparent}
+#buildingTransition.single-entry #buildingFallback{opacity:1;animation:sharedLift 1.6s ease-in-out both!important}
+#buildingVideo{display:none!important}
+@keyframes sharedLift{0%,10%{transform:scale(1) translateY(0);opacity:1}100%{transform:scale(1.12) translateY(12%);opacity:0}}
+@media(max-width:650px){.view-change>img{object-fit:contain}.seminare-wordmark strong{font-size:42px}.seminare-wordmark span{font-size:14px}#welcome h1{font-size:18px}}
+@media(prefers-reduced-motion:reduce){#intro{display:none!important}.view-change{transition:none}}

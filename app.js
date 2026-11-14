@@ -5,36 +5,32 @@ const $=id=>document.getElementById(id);const NS='http://www.w3.org/2000/svg';co
 let state='home',floor=4,selected=null,hovered=null,view=0,mode='day',introTimer=null,cycleTimer=null,activeTab='render',project={units:[]};
 const floorUnits={"1": [{"letter": "A", "label": [568.0, 714.0], "points": [[277, 608], [716, 608], [716, 867], [420, 867], [420, 820], [251, 820], [251, 680], [277, 680]]}, {"letter": "B", "label": [979.5, 714.0], "points": [[833, 608], [1270, 608], [1270, 680], [1300, 680], [1300, 820], [1126, 820], [1126, 867], [833, 867]]}, {"letter": "C", "label": [568.0, 502.5], "points": [[251, 397], [420, 397], [420, 349], [716, 349], [716, 608], [277, 608], [277, 535], [251, 535]]}, {"letter": "D", "label": [979.5, 502.5], "points": [[833, 349], [1126, 349], [1126, 397], [1300, 397], [1300, 535], [1270, 535], [1270, 608], [833, 608]]}], "2": [{"letter": "A", "label": [554.5, 679.5], "points": [[248, 567], [712, 567], [712, 845], [397, 845], [397, 792], [224, 792], [224, 645], [248, 645]]}, {"letter": "B", "label": [990.5, 679.5], "points": [[838, 567], [1301, 567], [1301, 645], [1323, 645], [1323, 792], [1143, 792], [1143, 845], [838, 845]]}, {"letter": "C", "label": [554.5, 455.0], "points": [[224, 343], [397, 343], [397, 287], [712, 287], [712, 567], [248, 567], [248, 493], [224, 493]]}, {"letter": "D", "label": [990.5, 455.0], "points": [[838, 287], [1143, 287], [1143, 343], [1323, 343], [1323, 493], [1301, 493], [1301, 567], [838, 567]]}], "3": [{"letter": "A", "label": [567.5, 707.0], "points": [[248, 592], [726, 592], [726, 873], [409, 873], [409, 822], [224, 822], [224, 672], [248, 672]]}, {"letter": "B", "label": [1007.0, 707.0], "points": [[850, 592], [1331, 592], [1331, 672], [1358, 672], [1358, 822], [1164, 822], [1164, 873], [850, 873]]}, {"letter": "C", "label": [567.5, 476.5], "points": [[224, 361], [409, 361], [409, 305], [726, 305], [726, 592], [248, 592], [248, 514], [224, 514]]}, {"letter": "D", "label": [1007.0, 476.5], "points": [[850, 305], [1164, 305], [1164, 361], [1358, 361], [1358, 514], [1331, 514], [1331, 592], [850, 592]]}], "4": [{"letter": "A", "label": [549.5, 689.0], "points": [[220, 576], [708, 576], [708, 854], [391, 854], [391, 802], [204, 802], [204, 653], [220, 653]]}, {"letter": "B", "label": [988.0, 689.0], "points": [[831, 576], [1305, 576], [1305, 653], [1335, 653], [1335, 802], [1145, 802], [1145, 854], [831, 854]]}, {"letter": "C", "label": [549.5, 463.5], "points": [[204, 351], [391, 351], [391, 298], [708, 298], [708, 576], [220, 576], [220, 501], [204, 501]]}, {"letter": "D", "label": [988.0, 463.5], "points": [[831, 298], [1145, 298], [1145, 351], [1335, 351], [1335, 501], [1305, 501], [1305, 576], [831, 576]]}]};
 const ground=[{"letter": "L1", "label": [560, 710], "points": [[382, 490], [524, 490], [524, 451], [693, 451], [693, 877], [539, 877], [539, 838], [394, 838], [394, 715], [415, 715], [415, 605], [382, 605]]}, {"letter": "L2", "label": [1000, 710], "points": [[837, 451], [1053, 451], [1053, 490], [1200, 490], [1200, 838], [1049, 838], [1049, 877], [837, 877]]}];
-const buildingSilhouettes={"0": [[738, 363], [841, 363], [841, 446], [1058, 446], [1058, 484], [1206, 484], [1206, 720], [1206, 842], [1056, 842], [1056, 882], [694, 882], [539, 882], [539, 842], [389, 842], [389, 722], [232, 722], [232, 600], [376, 600], [376, 484], [520, 484], [520, 446], [738, 446]], "1": [[709, 235], [838, 235], [838, 341], [1128, 341], [1128, 389], [1307, 389], [1307, 541], [1277, 541], [1277, 676], [1307, 676], [1307, 827], [1133, 827], [1133, 876], [827, 876], [827, 827], [723, 827], [723, 876], [414, 876], [414, 827], [244, 827], [244, 689], [199, 689], [199, 549], [244, 549], [244, 389], [414, 389], [414, 341], [709, 341]], "2": [[702, 166], [847, 166], [847, 280], [1150, 280], [1150, 335], [1331, 335], [1331, 501], [1309, 501], [1309, 638], [1333, 638], [1333, 800], [1150, 800], [1150, 853], [831, 853], [831, 800], [721, 800], [721, 853], [397, 853], [397, 800], [215, 800], [215, 638], [185, 638], [185, 512], [215, 512], [215, 335], [385, 335], [385, 280], [702, 280]], "3": [[718, 179], [856, 179], [856, 298], [1171, 298], [1171, 353], [1366, 353], [1366, 521], [1337, 521], [1337, 665], [1367, 665], [1367, 830], [1171, 830], [1171, 881], [845, 881], [845, 830], [734, 830], [734, 881], [402, 881], [402, 830], [216, 830], [216, 668], [181, 668], [181, 522], [216, 522], [216, 353], [401, 353], [401, 298], [718, 298]], "4": [[699, 174], [839, 174], [839, 290], [1150, 290], [1150, 345], [1343, 345], [1343, 506], [1311, 506], [1311, 647], [1343, 647], [1343, 810], [1150, 810], [1150, 863], [825, 863], [825, 810], [713, 810], [713, 863], [384, 863], [384, 810], [197, 810], [197, 345], [384, 345], [384, 290], [699, 290]]};
-const high=floorUnits[4];
+const buildingSilhouettes={"0": [[738,363],[841,363],[841,446],[1058,446],[1058,484],[1206,484],[1206,610],[1194,610],[1194,709],[1206,709],[1206,842],[1056,842],[1056,882],[832,882],[832,848],[754,848],[754,882],[694,882], [539, 882], [539, 842], [389, 842], [389, 722], [232, 722], [232, 600], [376, 600], [376, 484], [520, 484], [520, 446], [738, 446]], "1": [[709, 235], [838, 235], [838, 341], [1128, 341], [1128, 389], [1307, 389], [1307, 541], [1277, 541], [1277, 676], [1307, 676], [1307, 827], [1133, 827], [1133, 876], [827, 876], [827, 827], [723, 827], [723, 876], [414, 876], [414, 827], [244, 827], [244, 689], [199, 689], [199, 549], [244, 549], [244, 389], [414, 389], [414, 341], [709, 341]], "2": [[702, 166], [847, 166], [847, 280], [1150, 280], [1150, 335], [1331, 335], [1331, 501], [1309, 501], [1309, 638], [1333, 638], [1333, 800], [1150, 800], [1150, 853], [831, 853], [831, 800], [721, 800], [721, 853], [397, 853], [397, 800], [215, 800], [215, 638], [185, 638], [185, 512], [215, 512], [215, 335], [385, 335], [385, 280], [702, 280]], "3": [[718, 179], [856, 179], [856, 298], [1171, 298], [1171, 353], [1366, 353], [1366, 521], [1337, 521], [1337, 665], [1367, 665], [1367, 830], [1171, 830], [1171, 881], [845, 881], [845, 830], [734, 830], [734, 881], [402, 881], [402, 830], [216, 830], [216, 668], [181, 668], [181, 522], [216, 522], [216, 353], [401, 353], [401, 298], [718, 298]], "4": [[699, 174], [839, 174], [839, 290], [1150, 290], [1150, 345], [1343, 345], [1343, 506], [1311, 506], [1311, 647], [1343, 647], [1343, 810], [1150, 810], [1150, 863], [825, 863], [825, 810], [713, 810], [713, 863], [384, 863], [384, 810], [197, 810], [197, 345], [384, 345], [384, 290], [699, 290]]};
+for(let f=2;f<=4;f++){floorUnits[f]=floorUnits[1];buildingSilhouettes[f]=buildingSilhouettes[1];}
+const high=floorUnits[1];
 const units=()=>floor===0?ground:floorUnits[floor];const unitId=i=>floor===0?`PB-${i+1}`:`${floor}${high[i].letter}`;const unitTitle=i=>floor===0?`Local ${i+1}`:`Unidad ${unitId(i)}`;
 function data(i){return project.units.find(u=>u.id===unitId(i))||{status:'available',rooms:floor===0?null:2,bedrooms:floor===0?0:1,bathrooms:1,balcony:floor===0?false:true,kitchen:floor===0?'Office':'Sí'};}
 function status(i){const u=data(i);return {label:({available:'Disponible',sold:'Vendida',reserved:'Reservada'})[u.status]||'Disponibilidad a confirmar',color:({available:'#1dac70',sold:'#e92236',reserved:'#c18d38'})[u.status]||'#ba913e'};}
 const show=(id,on)=>$(id).hidden=!on;function context(){return floor===0?'Planta baja · Locales comerciales':`Piso ${floor} · 4 departamentos`;}
-fetch('./project.json?v=unidades-20261110').then(r=>r.json()).then(async d=>{project=d;if(d.availabilityEndpoint){try{const r=await fetch(d.availabilityEndpoint);if(!r.ok)throw Error(r.status);const rows=await r.json();if(Array.isArray(rows))project.units=project.units.map(u=>({...u,...rows.find(v=>v.id===u.id)}));}catch(e){console.warn('Disponibilidad pendiente',e);}}applyMedia();if(state==='floors')renderPlan();else if(state==='detail')openDetails();}).catch(console.error);
-for(const m of ['day','night'])for(let i=0;i<6;i++){const image=new Image();image.src=`assets/render-20261007-exterior-${m}-${i}.webp`;}
+fetch('./project.json?v=exteriores-20261114').then(r=>r.json()).then(async d=>{project=d;if(d.availabilityEndpoint){try{const r=await fetch(d.availabilityEndpoint);if(!r.ok)throw Error(r.status);const rows=await r.json();if(Array.isArray(rows))project.units=project.units.map(u=>({...u,...rows.find(v=>v.id===u.id)}));}catch(e){console.warn('Disponibilidad pendiente',e);}}applyMedia();if(state==='floors')renderPlan();else if(state==='detail')openDetails();}).catch(console.error);
 function setMode(value){mode=value;$('nightImage').style.opacity=value==='night'?'1':'0';$('day').setAttribute('aria-pressed',value==='day');$('night').setAttribute('aria-pressed',value==='night');}
 function startDayNightCycle(){
  clearInterval(cycleTimer);
  if(!['home','exterior'].includes(state))return;
  cycleTimer=setInterval(()=>{if(!['home','exterior'].includes(state)||$('app').classList.contains('entering')||$('app').classList.contains('ascending'))return;setMode(mode==='day'?'night':'day');},6000);
 }
-function setView(value){view=(value+6)%6;const front=state==='home',media=project.media||{},images=front?media.cover:media.exterior?.[view];$('dayImage').src=images?.day||(front?'assets/render-20261007-front-day.webp':`assets/render-20261007-exterior-day-${view}.webp`);$('nightImage').src=images?.night||(front?'assets/render-20261007-front-night.webp':`assets/render-20261007-exterior-night-${view}.webp`);$('dayImage').alt=`Vista exterior ${view+1} del edificio, de día`;$('nightImage').alt=`Vista exterior ${view+1} del edificio, de noche`;document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.view===view));}
-for(let i=0;i<6;i++){const b=document.createElement('button');b.dataset.view=i;b.textContent=i+1;b.setAttribute('aria-label',`Vista ${i+1} del edificio`);b.onclick=()=>setView(i);$('viewDots').appendChild(b);}
+function setView(value){view=(value+3)%3;const front=state==='home',media=project.media||{},images=front?media.cover:media.exterior?.[view];$('dayImage').src=images?.day||(front?'assets/exteriores-20261114/4.webp':`assets/exteriores-20261114/${3-view}.png`);$('nightImage').src=images?.night||(front?'assets/exteriores-20261114/4.webp':`assets/exteriores-20261114/${3-view}N.png`);$('dayImage').alt=`Vista exterior ${view+1} del edificio, de día`;$('nightImage').alt=`Vista exterior ${view+1} del edificio, de noche`;document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.view===view));}
 let arrivalRun=0,buildingRun=0;
 function revealFirstFrame(video,container,isActive){video.onplaying=()=>{const reveal=()=>{if(isActive())container.classList.add('motion-ready');else video.pause();};if(video.requestVideoFrameCallback)video.requestVideoFrameCallback(reveal);else reveal();};}
 function stopIntro(){const wasEntering=$('app').classList.contains('entering');arrivalRun++;clearTimeout(introTimer);const video=$('arrivalVideo');video.onplaying=null;video.pause();$('app').classList.remove('entering','intro-fallback');$('intro').classList.remove('motion-ready');show('intro',false);$('arrivalStart').replaceChildren();if(state==='exterior'){show('exteriorControls',true);show('dayControls',true);show('floorsBtn',true);show('hint',true);if(wasEntering)startDayNightCycle();}}
 function route(next,keepBuildingTransition=false){closeMaps();show('mapScreen',next==='map');if(!keepBuildingTransition)cancelBuildingEntry();stopIntro();clearInterval(cycleTimer);state=next;selected=null;hovered=null;$('app').dataset.screen=next;show('exteriorStage',next==='home'||next==='exterior');show('welcome',next==='home');show('back',next!=='home');show('context',next!=='home');show('floorsBtn',next==='exterior');show('dayControls',next==='exterior');show('exteriorControls',next==='exterior');show('floorStage',next==='floors');show('floorRail',next==='floors');show('floorCadBtn',next==='floors');show('details',false);show('unitPreview',false);show('hint',next==='floors'||next==='exterior');$('hint').textContent=next==='floors'?'Pasá el cursor o tocá una unidad':'Elegí un ángulo para recorrer el exterior';$('context').textContent=next==='floors'?context():next==='map'?'Mapa y cercanía':'Proyecto Inmobiliario';if(next==='home'){setView(0);setMode('day');}else if(next==='exterior'){setView(view);}else if(next==='floors'){floor=4;renderPlan();}else if(next==='map'){openMaps($('mapScreen'),(project.mapData||'assets/nearby-places-20261019.json')+'?v=20261029');}if(next==='home'||next==='exterior')startDayNightCycle();history.replaceState(null,'','#'+next);}
 function useIntroFallback(){if(!$('app').classList.contains('entering'))return;$('app').classList.add('intro-fallback');$('arrivalVideo').pause();clearTimeout(introTimer);introTimer=setTimeout(stopIntro,1800);}
 function enter(){
- const still=$('exteriorStage').cloneNode(true),nightOpacity=getComputedStyle($('nightImage')).opacity;
- still.removeAttribute('id');still.className='arrival-still';still.hidden=false;
- still.querySelectorAll('img').forEach((image,index)=>{image.removeAttribute('id');image.style.opacity=index===1?nightOpacity:'1';});
- route('exterior');setView(0);setMode('day');$('arrivalStart').replaceChildren(still);
- show('exteriorControls',false);show('dayControls',false);show('floorsBtn',false);show('hint',false);show('intro',true);
- clearInterval(cycleTimer);$('app').classList.add('entering');const video=$('arrivalVideo'),run=++arrivalRun;video.currentTime=0;
- revealFirstFrame(video,$('intro'),()=>run===arrivalRun&&$('app').classList.contains('entering'));
- video.play().catch(()=>{if(run===arrivalRun)useIntroFallback();});introTimer=setTimeout(useIntroFallback,16000);
+ route('exterior');setView(0);setMode('day');
+ if(reduced)return;
+ show('exteriorControls',false);show('dayControls',false);show('floorsBtn',false);show('hint',false);
+ clearInterval(cycleTimer);show('intro',true);$('app').classList.add('entering');
+ introTimer=setTimeout(stopIntro,3300);
 }
 $('arrivalVideo').onended=stopIntro;$('arrivalVideo').onerror=useIntroFallback;
 const floorAlignment={
@@ -45,7 +41,7 @@ const floorAlignment={
  4:{s:1,cx:770,cy:576}
 };
 function alignFloor(){
- const a=floorAlignment[floor];
+ const a=floorAlignment[floor===0?0:1];
  $('floorContent').setAttribute('transform',`translate(${770-a.cx*a.s} ${576-a.cy*a.s}) scale(${a.s})`);
  $('groundCutWall').setAttribute('visibility',floor===0?'visible':'hidden');$('groundCutWall').removeAttribute('hidden');
  $('plan').setAttribute('viewBox',innerWidth<=700?'-30 80 1430 850':'-15 75 1400 850');
@@ -87,17 +83,25 @@ function selectTab(tab){
  }
 }
 let buildingTimer=null;
-function cancelBuildingEntry(){buildingRun++;clearTimeout(buildingTimer);const video=$('buildingVideo');video.onplaying=null;video.pause();show('buildingTransition',false);$('buildingTransition').classList.remove('reveal-floor','building-fallback','motion-ready');$('app').classList.remove('ascending');}
+function cancelBuildingEntry(){buildingRun++;clearTimeout(buildingTimer);const video=$('buildingVideo');video.onplaying=null;video.pause();show('buildingTransition',false);$('buildingTransition').classList.remove('reveal-floor','building-fallback','motion-ready','single-entry');$('app').classList.remove('ascending');}
 function finishBuildingEntry(){if(!$('app').classList.contains('ascending'))return;clearTimeout(buildingTimer);$('buildingVideo').pause();route('floors',true);$('app').classList.remove('ascending');$('buildingTransition').classList.add('reveal-floor');buildingTimer=setTimeout(cancelBuildingEntry,1150);}
 function buildingFallback(){if(!$('app').classList.contains('ascending'))return;$('buildingVideo').pause();$('buildingTransition').classList.add('building-fallback');clearTimeout(buildingTimer);buildingTimer=setTimeout(finishBuildingEntry,1800);}
-function enterBuilding(){
- if(state!=='exterior'||$('app').classList.contains('ascending'))return;stopIntro();clearInterval(cycleTimer);
- const video=$('buildingVideo'),poster=(project.media?.exterior?.[view]?.[mode])||`assets/render-20261007-exterior-${mode}-${view}.webp`,run=++buildingRun;
- video.poster=poster;$('buildingFallback').src=poster;
- video.src=project.media?.buildingEntryVideos?.[mode]?.[view]||`assets/entry-render-20261021-${mode}-${view}.mp4`;
- $('app').classList.add('ascending');show('buildingTransition',true);
- revealFirstFrame(video,$('buildingTransition'),()=>run===buildingRun&&$('app').classList.contains('ascending'));
- buildingTimer=setTimeout(buildingFallback,16000);video.play().catch(()=>{if(run===buildingRun)buildingFallback();});
+async function enterBuilding(){
+ if(state!=='exterior'||$('app').classList.contains('ascending'))return;
+ stopIntro();clearInterval(cycleTimer);const run=++buildingRun;
+ $('app').classList.add('ascending');
+ const poster=project.media?.exterior?.[0]?.[mode]||'assets/exteriores-20261114/3.png';
+ const image=new Image();image.src=poster;await image.decode().catch(()=>{});
+ if(run!==buildingRun)return;
+ const previous=$('exteriorStage').cloneNode(true);previous.removeAttribute('id');previous.className='view-change';
+ previous.querySelectorAll('[id]').forEach(el=>el.removeAttribute('id'));$('app').append(previous);
+ setView(0);
+ const fade=previous.animate([{opacity:1},{opacity:0}],{duration:reduced?0:350,fill:'forwards'});
+ await fade.finished.catch(()=>{});previous.remove();if(run!==buildingRun)return;
+ if(reduced){finishBuildingEntry();return;}
+ $('buildingFallback').src=poster;show('buildingTransition',true);
+ $('buildingTransition').classList.add('single-entry');
+ buildingTimer=setTimeout(finishBuildingEntry,1000);
 }
 function openFloorCad(){const groundFloor=floor===0,base=groundFloor?'floor-ground':'floor-high';$('floorCadTitle').textContent=(groundFloor?'Planta baja':'Piso '+floor)+' · Plano CAD';$('floorCadOpen').href=`assets/${base}.pdf`;$('floorCadDownload').href=`assets/${base}.pdf`;$('floorCadPreview').src=`assets/cad-${groundFloor?'ground':'high'}.png`;$('floorCadPreview').alt='Plano CAD de la planta completa';$('floorCadPreview').parentElement.classList.remove('zoomed');$('floorCad').showModal();}
 $('floorCadBtn').onclick=openFloorCad;$('floorCadPreview').onclick=()=>$('floorCadPreview').parentElement.classList.toggle('zoomed');$('buildingVideo').onended=finishBuildingEntry;$('buildingVideo').onerror=buildingFallback;$('skipBuilding').onclick=finishBuildingEntry;
@@ -119,7 +123,7 @@ function renderUnitPlan(){
  const x=Math.min(...xs)-pad,y=Math.min(...ys)-pad,w=Math.max(...xs)-x+pad,h=Math.max(...ys)-y+pad,groundFloor=floor===0;
  $('renderPanel').innerHTML=`<svg xmlns="${NS}" role="img" aria-label="Plano 3D de ${unitTitle(selected)}" viewBox="${x} ${y} ${w} ${h}"><defs><mask id="unitRenderMask" maskUnits="userSpaceOnUse" x="${x}" y="${y}" width="${w}" height="${h}"><polygon points="${u.points.map(p=>p.join(',')).join(' ')}" fill="white" stroke="white" stroke-width="24" stroke-linejoin="round"/></mask></defs><image mask="url(#unitRenderMask)" href="${planSource()}" width="1536" height="1024"/></svg>`;
 }
-function applyMedia(){const source=project.media?.arrivalVideo,video=$('arrivalVideo');if(source&&video.getAttribute('src')!==source&&!$('app').classList.contains('entering'))video.src=source;setView(view);}
+function applyMedia(){setView(view);for(const pair of project.media?.exterior||[])for(const src of Object.values(pair)){const image=new Image();image.src=src;}const plan=new Image();plan.src=planSource();}
 function updateFloorBackground(){
  const source=project.media?.floorPlans?.[floor]?null:project.media?.floorBackgrounds?.[floor];
  const backdrop=$('floorBackdrop'),previous=backdrop.style.backgroundImage,next=source?`url(${JSON.stringify(source)})`:'none';backdrop.replaceChildren();backdrop.style.backgroundImage=next;if(previous&&previous!=='none'&&previous!==next){const fade=document.createElement('div');Object.assign(fade.style,{position:'absolute',inset:'0',backgroundImage:previous,backgroundSize:'cover',backgroundPosition:'center'});backdrop.appendChild(fade);fade.animate([{opacity:1},{opacity:0}],{duration:650,fill:'forwards'}).onfinish=()=>fade.remove();}
@@ -129,7 +133,7 @@ function updateFloorBackground(){
 
 
 
-function planSource(){return project.media?.floorPlans?.[floor]||'assets/plans-20261110/'+['00_Planta_baja','01_Primer_piso','02_Segundo_piso','03_Tercer_piso','04_Cuarto_piso'][floor]+'.png';}
+function planSource(){return 'assets/plans-20261110/'+(floor===0?'00_Planta_baja':'01_Primer_piso')+'.png';}
 
 function alignTerrain(){
  const matrix=$('plan').getScreenCTM();if(!matrix)return;
