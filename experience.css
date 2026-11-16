@@ -178,7 +178,7 @@
 #buildingVideo{display:none!important}
 @keyframes sharedLift{0%,10%{transform:scale(1) translateY(0);opacity:1}100%{transform:scale(1.12) translateY(12%);opacity:0}}
 @media(max-width:650px){.view-change>img{object-fit:contain}.seminare-wordmark strong{font-size:42px}.seminare-wordmark span{font-size:14px}#welcome h1{font-size:18px}}
-@media(prefers-reduced-motion:reduce){#intro{display:none!important}.view-change{transition:none}}
+@media(prefers-reduced-motion:reduce) and (max-width:0px){#intro{display:none!important}.view-change{transition:none}}
 
 
 /* Satellite descent, cloud pass, and arrival at the full facade. */
@@ -202,4 +202,29 @@
 #buildingTransition.single-entry #buildingTop{animation:topReveal 5.2s ease-in-out both}
 @keyframes facadeLift{0%,12%{opacity:1;transform:scale(1) translateY(0)}65%{opacity:1;transform:perspective(1300px) rotateX(22deg) scale(.88) translateY(7%)}88%,100%{opacity:0;transform:perspective(1300px) rotateX(45deg) scale(.68) translateY(18%)}}
 @keyframes topReveal{0%,57%{opacity:0;transform:scale(1.14)}86%,100%{opacity:1;transform:scale(1)}}
-@media(prefers-reduced-motion:reduce){#intro.motion-ready #arrivalFallback,#intro.motion-ready #arrivalVideo,#buildingTransition.single-entry #buildingFallback,#buildingTransition.single-entry #buildingTop{animation:none!important}}
+@media(prefers-reduced-motion:reduce) and (max-width:0px){#intro.motion-ready #arrivalFallback,#intro.motion-ready #arrivalVideo,#buildingTransition.single-entry #buildingFallback,#buildingTransition.single-entry #buildingTop{animation:none!important}}
+
+/* Use the active render as a full-bleed, softly extended environment behind the exact facade. */
+#exteriorStage{isolation:isolate;background:#82909a}
+#exteriorStage::before{content:"";position:absolute;inset:-6%;z-index:0;background-image:var(--scene-image);background-position:center;background-size:cover;filter:blur(25px) saturate(.84);transform:scale(1.04)}
+#exteriorStage>img{z-index:1;object-fit:contain!important;object-position:center center}
+#exteriorStage>.shade{z-index:2}
+#intro{isolation:isolate;background:#82909a!important}
+#intro::before{content:"";position:absolute;inset:-6%;z-index:0;background:url('assets/exteriores-20261114/3.png') center/cover;filter:blur(25px) saturate(.84);transform:scale(1.04)}
+#buildingTransition.single-entry{isolation:isolate;background:#82909a!important}
+#buildingTransition.single-entry::before{content:"";position:absolute;inset:-6%;z-index:0;background-image:var(--transition-image);background-position:center;background-size:cover;filter:blur(25px) saturate(.84);transform:scale(1.04)}
+#buildingTransition.single-entry #buildingFallback{z-index:1}
+#buildingTransition.single-entry #buildingTop{z-index:2}
+#buildingTransition.single-entry .motion-shade{z-index:3;pointer-events:none}
+#buildingTransition.single-entry #skipBuilding{z-index:4}
+.nearby-heading{background:linear-gradient(90deg,rgba(23,23,22,.88),rgba(30,29,26,.5)),url('assets/exteriores-20261114/3.png') center 47%/cover}
+
+/* Fade the render into its matching enlarged environment instead of exposing a rectangular edge. */
+#exteriorStage>img{inset:auto!important;top:50%;left:50%;width:min(100vw,calc(100dvh * var(--scene-ratio,1.3333)));height:auto;max-height:100dvh;aspect-ratio:var(--scene-ratio,1.3333);transform:translate(-50%,-50%);object-fit:fill!important;mask-image:radial-gradient(ellipse farthest-side at center,#000 75%,transparent 100%)}
+#buildingTransition.single-entry #buildingFallback{inset:auto;top:50%;left:50%;width:min(100vw,calc(100dvh * 1.3333));height:auto;max-height:100dvh;aspect-ratio:1.3333;object-fit:fill;mask-image:radial-gradient(ellipse farthest-side at center,#000 75%,transparent 100%);animation:facadeLiftSeamless 5.2s cubic-bezier(.24,.55,.2,1) both!important}
+#buildingTransition.single-entry #buildingTop{inset:auto;top:50%;left:50%;width:min(100vw,calc(100dvh * 1.5));height:auto;max-height:100dvh;aspect-ratio:1.5;object-fit:fill;mask-image:radial-gradient(ellipse farthest-side at center,#000 75%,transparent 100%);animation:topRevealSeamless 5.2s ease-in-out both!important}
+#buildingTransition.single-entry::after{content:"";position:absolute;inset:-6%;z-index:0;background:url('assets/plans-20261116-v2/planta-tipo.png') center/cover;filter:blur(25px) saturate(.84);transform:scale(1.04);animation:topBackdropReveal 5.2s ease-in-out both}
+@keyframes facadeLiftSeamless{0%,12%{opacity:1;transform:translate(-50%,-50%) scale(1)}65%{opacity:1;transform:translate(-50%,-45%) perspective(1300px) rotateX(22deg) scale(.88)}88%,100%{opacity:0;transform:translate(-50%,-38%) perspective(1300px) rotateX(45deg) scale(.68)}}
+@keyframes topRevealSeamless{0%,57%{opacity:0;transform:translate(-50%,-50%) scale(1.14)}86%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+@keyframes topBackdropReveal{0%,57%{opacity:0}86%,100%{opacity:1}}
+#exteriorStage>img{top:50%!important;left:50%!important;right:auto!important;bottom:auto!important}
