@@ -30,12 +30,15 @@ function enter(){
  if(reduced)return;
  show('exteriorControls',false);show('dayControls',false);show('floorsBtn',false);show('hint',false);
  clearInterval(cycleTimer);show('intro',true);$('app').classList.add('entering');
- introTimer=setTimeout(stopIntro,3300);
+ const video=$('arrivalVideo');video.hidden=false;video.loop=true;video.currentTime=0;
+ $('intro').classList.add('motion-ready');
+ video.play().catch(()=>{video.hidden=true;});
+ introTimer=setTimeout(stopIntro,8200);
 }
 $('arrivalVideo').onended=stopIntro;$('arrivalVideo').onerror=useIntroFallback;
 const floorAlignment={
  0:{s:1146/830,cx:789,cy:713},
- 1:{s:1146/1063,cx:775.5,cy:608},
+ 1:{s:1.23,cx:775.5,cy:608},
  2:{s:1146/1118,cx:774,cy:567},
  3:{s:1146/1151,cx:791.5,cy:592},
  4:{s:1,cx:770,cy:576}
@@ -43,7 +46,6 @@ const floorAlignment={
 function alignFloor(){
  const a=floorAlignment[floor===0?0:1];
  $('floorContent').setAttribute('transform',`translate(${770-a.cx*a.s} ${576-a.cy*a.s}) scale(${a.s})`);
- $('groundCutWall').setAttribute('visibility',floor===0?'visible':'hidden');$('groundCutWall').removeAttribute('hidden');
  $('plan').setAttribute('viewBox',innerWidth<=700?'-30 80 1430 850':'-15 75 1400 850');
 }
 function renderPlan(){updateFloorBackground();$('plan').setAttribute('viewBox','0 0 1536 1024');$('planImage').setAttribute('clip-path','url(#floorSilhouette)');$('floorOutline').setAttribute('points',buildingSilhouettes[floor].map(p=>p.join(',')).join(' '));$('planImage').setAttribute('href',planSource());$('planImage').setAttribute('width',1536);$('planImage').setAttribute('height',1024);$('hotspots').replaceChildren();$('planLabels').replaceChildren();units().forEach((u,i)=>{const polygon=document.createElementNS(NS,'polygon');polygon.setAttribute('points',u.points.map(p=>p.join(',')).join(' '));polygon.dataset.unit=i;polygon.setAttribute('tabindex','0');polygon.setAttribute('role','button');polygon.setAttribute('aria-label',`Ver ${unitTitle(i)}`);polygon.style.setProperty('--status-color',status(i).color);polygon.style.setProperty('--status-fill',status(i).color+'33');polygon.addEventListener('pointerenter',()=>previewUnit(i,false));polygon.addEventListener('pointerleave',()=>{if(selected===null){hovered=null;highlight(-1);show('unitPreview',false);}});polygon.addEventListener('focus',()=>previewUnit(i,false));polygon.addEventListener('click',()=>previewUnit(i,true));polygon.addEventListener('dblclick',()=>{previewUnit(i,true);openDetails();});polygon.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();previewUnit(i,true);}});$('hotspots').appendChild(polygon);const b=document.createElement('button');b.className='unit-label';b.dataset.unit=i;b.setAttribute('aria-label',`Ver ${unitTitle(i)}`);b.innerHTML=`<i style="background:${status(i).color}"></i><span>${floor===0?'Local '+(i+1):unitId(i)}</span>`;b.style.setProperty('--status-color',status(i).color);b.onclick=()=>previewUnit(i,true);b.ondblclick=()=>{previewUnit(i,true);openDetails();};b.onmouseenter=()=>previewUnit(i,false);b.onmouseleave=()=>{if(selected===null){hovered=null;highlight(-1);show('unitPreview',false);}};$('planLabels').appendChild(b);});$('context').textContent=context();document.querySelectorAll('[data-floor]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.floor===floor));alignFloor();requestAnimationFrame(positionLabels);}
@@ -52,7 +54,13 @@ function highlight(i){document.querySelectorAll('[data-unit]').forEach(el=>el.cl
 function previewUnit(i,lock){hovered=i;if(lock)selected=i;highlight(i);$('previewFloor').textContent=floor===0?'PLANTA BAJA':`PISO ${floor}`;$('previewName').textContent=unitTitle(i);$('previewRooms').textContent=floor===0?'Local comercial · Office · Baño':'2 ambientes · 1 dormitorio · Balcón';$('previewStatus').textContent=status(i).label;$('previewStatus').style.color=status(i).color;$('previewStatus').style.backgroundColor=status(i).color+'18';show('unitPreview',true);}
 function setFloor(value){
  if(value===floor)return;
+ const previous=floor;
  floor=value;selected=null;hovered=null;show('unitPreview',false);renderPlan();
+ if(!reduced){
+  const direction=value>previous?1:-1;
+  const plan=$('plan');plan.getAnimations().forEach(a=>a.cancel());
+  plan.animate([{opacity:.35,transform:`translateY(${direction*22}px)`},{opacity:1,transform:'translateY(0)'}],{duration:460,easing:'cubic-bezier(.2,.6,.2,1)'});
+ }
 }
 function closePreview(){selected=null;hovered=null;highlight(-1);show('unitPreview',false);}
 const confirmed=v=>v===null||v===undefined?'A confirmar':typeof v==='boolean'?(v?'Sí':'No'):v;
@@ -86,22 +94,15 @@ let buildingTimer=null;
 function cancelBuildingEntry(){buildingRun++;clearTimeout(buildingTimer);const video=$('buildingVideo');video.onplaying=null;video.pause();show('buildingTransition',false);$('buildingTransition').classList.remove('reveal-floor','building-fallback','motion-ready','single-entry');$('app').classList.remove('ascending');}
 function finishBuildingEntry(){if(!$('app').classList.contains('ascending'))return;clearTimeout(buildingTimer);$('buildingVideo').pause();route('floors',true);$('app').classList.remove('ascending');$('buildingTransition').classList.add('reveal-floor');buildingTimer=setTimeout(cancelBuildingEntry,1150);}
 function buildingFallback(){if(!$('app').classList.contains('ascending'))return;$('buildingVideo').pause();$('buildingTransition').classList.add('building-fallback');clearTimeout(buildingTimer);buildingTimer=setTimeout(finishBuildingEntry,1800);}
-async function enterBuilding(){
+function enterBuilding(){
  if(state!=='exterior'||$('app').classList.contains('ascending'))return;
  stopIntro();clearInterval(cycleTimer);const run=++buildingRun;
- $('app').classList.add('ascending');
- const poster=project.media?.exterior?.[0]?.[mode]||'assets/exteriores-20261114/3.png';
- const image=new Image();image.src=poster;await image.decode().catch(()=>{});
- if(run!==buildingRun)return;
- const previous=$('exteriorStage').cloneNode(true);previous.removeAttribute('id');previous.className='view-change';
- previous.querySelectorAll('[id]').forEach(el=>el.removeAttribute('id'));$('app').append(previous);
- setView(0);
- const fade=previous.animate([{opacity:1},{opacity:0}],{duration:reduced?0:350,fill:'forwards'});
- await fade.finished.catch(()=>{});previous.remove();if(run!==buildingRun)return;
- if(reduced){finishBuildingEntry();return;}
- $('buildingFallback').src=poster;show('buildingTransition',true);
- $('buildingTransition').classList.add('single-entry');
- buildingTimer=setTimeout(finishBuildingEntry,1000);
+ const poster=project.media?.exterior?.[view]?.[mode]||`assets/exteriores-20261114/${3-view}.png`;
+ $('buildingFallback').src=poster;
+ $('buildingTop').src='assets/plans-20261116/planta-tipo.png';
+ $('app').classList.add('ascending');show('buildingTransition',true);
+ $('buildingTransition').classList.add('single-entry','motion-ready');
+ buildingTimer=setTimeout(()=>{if(run===buildingRun)finishBuildingEntry();},5200);
 }
 function openFloorCad(){const groundFloor=floor===0,base=groundFloor?'floor-ground':'floor-high';$('floorCadTitle').textContent=(groundFloor?'Planta baja':'Piso '+floor)+' · Plano CAD';$('floorCadOpen').href=`assets/${base}.pdf`;$('floorCadDownload').href=`assets/${base}.pdf`;$('floorCadPreview').src=`assets/cad-${groundFloor?'ground':'high'}.png`;$('floorCadPreview').alt='Plano CAD de la planta completa';$('floorCadPreview').parentElement.classList.remove('zoomed');$('floorCad').showModal();}
 $('floorCadBtn').onclick=openFloorCad;$('floorCadPreview').onclick=()=>$('floorCadPreview').parentElement.classList.toggle('zoomed');$('buildingVideo').onended=finishBuildingEntry;$('buildingVideo').onerror=buildingFallback;$('skipBuilding').onclick=finishBuildingEntry;
@@ -133,7 +134,7 @@ function updateFloorBackground(){
 
 
 
-function planSource(){return 'assets/plans-20261110/'+(floor===0?'00_Planta_baja':'01_Primer_piso')+'.png';}
+function planSource(){return floor===0?'assets/plans-20261116/planta-baja.png':'assets/plans-20261116/planta-tipo.png';}
 
 function alignTerrain(){
  const matrix=$('plan').getScreenCTM();if(!matrix)return;
