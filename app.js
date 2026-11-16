@@ -141,10 +141,11 @@ function planSource(){return floor===0?'assets/plans-20261116-v2/planta-baja.png
 
 function alignTerrain(){
  const matrix=$('plan').getScreenCTM();if(!matrix)return;
- const bg=$('floorBackdrop'),oldLevelScale=2.04*(1-floor*.012),levelScale=1.958*(1-floor*.012),scale=matrix.a*levelScale;
+ const bg=$('floorBackdrop'),levelScale=floor===0?2.086:1.962,scale=matrix.a*levelScale;
  if(innerWidth<=700){const k=innerHeight/1024*(1.08-floor*.012);bg.style.backgroundSize=(1536*k)+'px '+(1024*k)+'px';bg.style.backgroundPosition=(innerWidth/2-800*k)+'px '+((innerHeight-1024*k)/2)+'px';return;}
- const x=8.3-470*oldLevelScale+1183*(oldLevelScale-levelScale);
- const y=990-772*levelScale;
+ const content=$('floorContent').getScreenCTM();if(!content)return;
+ const left=content.e+(floor===0?230:200)*content.a;
+ const front=content.f+(floor===0?928:933)*content.d;
  bg.style.backgroundSize=(1536*scale)+'px '+(1024*scale)+'px';
- bg.style.backgroundPosition=(matrix.e+x*matrix.a)+'px '+(matrix.f+y*matrix.a)+'px';
+ bg.style.backgroundPosition=(left-467*scale)+'px '+(front-772*scale)+'px';
 }
