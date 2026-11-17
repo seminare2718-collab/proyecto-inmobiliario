@@ -36,17 +36,17 @@
 }
 
 @keyframes flightDusk {
-  0%, 12% { opacity: 1; transform: scale(1); }
-  30%, 100% { opacity: 0; transform: scale(1.05); }
+  0%, 22% { opacity: 1; transform: scale(1); }
+  28%, 100% { opacity: 0; transform: scale(1.05); }
 }
 @keyframes flightAerial {
-  0%, 12% { opacity: 0; transform: scale(1); }
-  30%, 55% { opacity: 1; }
-  77%, 100% { opacity: 0; transform: scale(1.2); }
+  0%, 22% { opacity: 0; transform: scale(1); }
+  28%, 65% { opacity: 1; }
+  71%, 100% { opacity: 0; transform: scale(1.2); }
 }
 @keyframes flightArrival {
-  0%, 56% { opacity: 0; transform: scale(1.095); }
-  80% { opacity: 1; }
+  0%, 65% { opacity: 0; transform: scale(1.095); }
+  71% { opacity: 1; }
   100% { opacity: 1; transform: scale(1); }
 }
 
@@ -57,22 +57,22 @@
 #buildingTransition #skipBuilding { z-index: 5; }
 
 @keyframes flightFront {
-  0%, 13% { opacity: 1; transform: scale(1); }
-  36%, 100% { opacity: 0; transform: scale(1.075); }
+  0%, 25% { opacity: 1; transform: scale(1); }
+  31%, 100% { opacity: 0; transform: scale(1.075); }
 }
 @keyframes flightTurn {
-  0%, 15% { opacity: 0; transform: scale(1.09) translateY(2%); }
-  36%, 49% { opacity: 1; }
-  69%, 100% { opacity: 0; transform: scale(1.025) translateY(-1%); }
+  0%, 25% { opacity: 0; transform: scale(1.09) translateY(2%); }
+  31%, 55% { opacity: 1; }
+  61%, 100% { opacity: 0; transform: scale(1.025) translateY(-1%); }
 }
 @keyframes flightOverhead {
-  0%, 48% { opacity: 0; transform: scale(1.055) translateY(2%); }
-  69%, 79% { opacity: 1; }
-  94%, 100% { opacity: 0; transform: scale(1.015) translateY(-1%); }
+  0%, 55% { opacity: 0; transform: scale(1.055) translateY(2%); }
+  61%, 83% { opacity: 1; }
+  89%, 100% { opacity: 0; transform: scale(1.015) translateY(-1%); }
 }
 @keyframes flightPlan {
-  0%, 80% { opacity: 0; transform: scale(1.075); }
-  96%, 100% { opacity: 1; transform: scale(1); }
+  0%, 83% { opacity: 0; transform: scale(1.075); }
+  89%, 100% { opacity: 1; transform: scale(1); }
 }
 
 @media (max-width: 650px) {
