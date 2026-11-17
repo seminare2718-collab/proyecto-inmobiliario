@@ -345,18 +345,18 @@
     ],
     "balconyViews": {
       "1A": {
-        "src": "assets/balcony-urban-20261019-1A.webp",
+        "src": "assets/views-20261117/1A.webp",
         "orientation": "Frente hacia Mackinlay Â· OrientaciÃ³n al mar",
         "modelFloorElevation": 5.381,
         "eyeHeight": 1.6,
-        "updated": "2026-10-19"
+        "updated": "2026-11-17"
       },
       "1B": {
-        "src": "assets/views-20261110/1B.png",
+        "src": "assets/views-20261117/1B.webp",
         "orientation": "Frente hacia Mackinlay Â· OrientaciÃ³n al mar",
         "modelFloorElevation": 5.381,
         "eyeHeight": 1.6,
-        "updated": "2026-10-19"
+        "updated": "2026-11-17"
       },
       "1C": {
         "src": "assets/balcony-urban-20261019-1C.webp",
@@ -373,18 +373,18 @@
         "updated": "2026-10-19"
       },
       "2A": {
-        "src": "assets/balcony-urban-20261019-2A.webp",
+        "src": "assets/views-20261117/2A.webp",
         "orientation": "Frente hacia Mackinlay Â· OrientaciÃ³n al mar",
         "modelFloorElevation": 8.381,
         "eyeHeight": 1.6,
-        "updated": "2026-10-19"
+        "updated": "2026-11-17"
       },
       "2B": {
-        "src": "assets/views-20261110/2B.png",
+        "src": "assets/views-20261117/2B.webp",
         "orientation": "Frente hacia Mackinlay Â· OrientaciÃ³n al mar",
         "modelFloorElevation": 8.381,
         "eyeHeight": 1.6,
-        "updated": "2026-10-19"
+        "updated": "2026-11-17"
       },
       "2C": {
         "src": "assets/balcony-urban-20261019-2C.webp",
@@ -401,18 +401,18 @@
         "updated": "2026-10-19"
       },
       "3A": {
-        "src": "assets/balcony-urban-20261019-3A.webp",
+        "src": "assets/views-20261117/3A.webp",
         "orientation": "Frente hacia Mackinlay Â· OrientaciÃ³n al mar",
         "modelFloorElevation": 11.381,
         "eyeHeight": 1.6,
-        "updated": "2026-10-19"
+        "updated": "2026-11-17"
       },
       "3B": {
-        "src": "assets/views-20261110/3B.png",
+        "src": "assets/views-20261117/3B.webp",
         "orientation": "Frente hacia Mackinlay Â· OrientaciÃ³n al mar",
         "modelFloorElevation": 11.381,
         "eyeHeight": 1.6,
-        "updated": "2026-10-19"
+        "updated": "2026-11-17"
       },
       "3C": {
         "src": "assets/balcony-urban-20261019-3C.webp",
@@ -429,18 +429,18 @@
         "updated": "2026-10-19"
       },
       "4A": {
-        "src": "assets/balcony-urban-20261019-4A.webp",
+        "src": "assets/views-20261117/4A.webp",
         "orientation": "Frente hacia Mackinlay Â· OrientaciÃ³n al mar",
         "modelFloorElevation": 14.381,
         "eyeHeight": 1.6,
-        "updated": "2026-10-19"
+        "updated": "2026-11-17"
       },
       "4B": {
-        "src": "assets/views-20261110/4B.png",
+        "src": "assets/views-20261117/4B.webp",
         "orientation": "Frente hacia Mackinlay Â· OrientaciÃ³n al mar",
         "modelFloorElevation": 14.381,
         "eyeHeight": 1.6,
-        "updated": "2026-10-19"
+        "updated": "2026-11-17"
       },
       "4C": {
         "src": "assets/balcony-urban-20261019-4C.webp",
@@ -457,8 +457,14 @@
         "updated": "2026-10-19"
       },
       "PB-2": {
-        "src": "assets/views-20261110/PB-2.png",
-        "orientation": "Vista exterior desde el local"
+        "src": "assets/views-20261117/PB-2.webp",
+        "orientation": "Vista exterior desde el local",
+        "updated": "2026-11-17"
+      },
+      "PB-1": {
+        "orientation": "Vista exterior desde el local",
+        "src": "assets/views-20261117/PB-1.webp",
+        "updated": "2026-11-17"
       }
     },
     "realEnvironment": {
