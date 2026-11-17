@@ -13,3 +13,5 @@
 @media(max-width:650px){#homeSky{mask-image:linear-gradient(#000 0%,#000 26%,transparent 37%)}#homeSky::before{height:48%}.nearby-heading::before{left:-14px;right:-14px;top:-150px}}
 @media(prefers-reduced-motion:reduce){#homeSky::before,#homeSky::after{animation:none}}
 .motion-off #homeSky::before,.motion-off #homeSky::after{animation:none}
+
+#intro #arrivalVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:4;opacity:0;transition:opacity .35s}#intro.motion-ready #arrivalVideo{opacity:1}#intro #skipIntro{z-index:5}
