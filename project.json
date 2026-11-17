@@ -318,9 +318,9 @@
       "4": "assets/site-floor-context-4.webp"
     },
     "cover": {
-      "day": "assets/scenes-20261116-v3/facade-dusk.jpg",
+      "day": "assets/scenes-20261116-v3/facade-day.jpg",
       "night": "assets/scenes-20261116-v3/facade-dusk.jpg",
-      "mobileDay": "assets/scenes-20261116-v3/facade-dusk-mobile.jpg",
+      "mobileDay": "assets/scenes-20261116-v3/facade-day-mobile.jpg",
       "mobileNight": "assets/scenes-20261116-v3/facade-dusk-mobile.jpg"
     },
     "exterior": [

@@ -1,0 +1,15 @@
+#homeSky{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden;display:none;mask-image:linear-gradient(#000 0%,#000 17%,transparent 29%)}
+[data-screen=home] #homeSky{display:block}
+#homeSky::before{content:'';position:absolute;left:-35%;top:-6%;width:170%;height:45%;background:url('assets/moving-clouds.svg') 0 0/100% 100% no-repeat;opacity:.48;animation:skyTravel 65s ease-in-out infinite alternate;transition:opacity 4s}
+#homeSky::after{content:'';position:absolute;left:16%;top:9%;width:36px;height:36px;border-radius:50%;background:#fff9da;box-shadow:0 0 32px 16px #fff2ba66,0 0 100px 60px #ffce6622;animation:sunTravel 24s ease-in-out infinite alternate;transition:opacity 4s;opacity:.85}
+.home-night #homeSky::after{opacity:0}.home-night #homeSky::before{opacity:.2}
+[data-screen=home] #nightImage{transition:opacity 4s ease!important}
+@keyframes skyTravel{from{transform:translateX(0)}to{transform:translateX(18%)}}
+@keyframes sunTravel{from{transform:translateX(0) translateY(20px)}to{transform:translateX(18vw) translateY(-22px)}}
+.terrain-lawn{position:absolute;pointer-events:none;background:url('assets/lawn-natural-20261117.webp') repeat;background-size:420px 420px;clip-path:polygon(30.6% 19.6%,34.9% 19.6%,34.9% 31.2%,65.1% 31.2%,65.1% 19.6%,76.6% 19.6%,76.6% 66.1%,70.7% 75.4%,30.6% 75.4%);opacity:.94}
+.nearby-heading{overflow:visible!important;background:none!important;border-radius:0!important;isolation:isolate}
+.nearby-heading::before{content:'';position:absolute;z-index:-1;top:-160px;bottom:0;left:-22px;right:-22px;background:linear-gradient(90deg,#101b25e8,#18212bd6),url('assets/scenes-20261116-v3/facade-day.jpg') center 47%/cover}
+[data-screen=map] #context{color:white}
+@media(max-width:650px){#homeSky{mask-image:linear-gradient(#000 0%,#000 26%,transparent 37%)}#homeSky::before{height:48%}.nearby-heading::before{left:-14px;right:-14px;top:-150px}}
+@media(prefers-reduced-motion:reduce){#homeSky::before,#homeSky::after{animation:none}}
+.motion-off #homeSky::before,.motion-off #homeSky::after{animation:none}
