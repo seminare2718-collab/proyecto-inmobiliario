@@ -318,21 +318,29 @@
       "4": "assets/site-floor-context-4.webp"
     },
     "cover": {
-      "day": "assets/exteriores-20261114/4.webp",
-      "night": "assets/exteriores-20261114/4.webp"
+      "day": "assets/scenes-20261116-v3/facade-dusk.jpg",
+      "night": "assets/scenes-20261116-v3/facade-dusk.jpg",
+      "mobileDay": "assets/scenes-20261116-v3/facade-dusk-mobile.jpg",
+      "mobileNight": "assets/scenes-20261116-v3/facade-dusk-mobile.jpg"
     },
     "exterior": [
       {
-        "day": "assets/exteriores-20261114/3.png",
-        "night": "assets/exteriores-20261114/3N.png"
+        "day": "assets/scenes-20261116-v3/facade-day.jpg",
+        "night": "assets/scenes-20261116-v3/facade-dusk.jpg",
+        "mobileDay": "assets/scenes-20261116-v3/facade-day-mobile.jpg",
+        "mobileNight": "assets/scenes-20261116-v3/facade-dusk-mobile.jpg"
       },
       {
-        "day": "assets/exteriores-20261114/2.png",
-        "night": "assets/exteriores-20261114/2N.png"
+        "day": "assets/scenes-20261116-v3/oblique-right-day.jpg",
+        "night": "assets/scenes-20261116-v3/oblique-right-dusk.jpg",
+        "mobileDay": "assets/scenes-20261116-v3/oblique-right-day-mobile.jpg",
+        "mobileNight": "assets/scenes-20261116-v3/oblique-right-dusk-mobile.jpg"
       },
       {
-        "day": "assets/exteriores-20261114/1.png",
-        "night": "assets/exteriores-20261114/1N.png"
+        "day": "assets/scenes-20261116-v3/oblique-left-day.jpg",
+        "night": "assets/scenes-20261116-v3/oblique-left-dusk.jpg",
+        "mobileDay": "assets/scenes-20261116-v3/oblique-left-day-mobile.jpg",
+        "mobileNight": "assets/scenes-20261116-v3/oblique-left-dusk-mobile.jpg"
       }
     ],
     "balconyViews": {
