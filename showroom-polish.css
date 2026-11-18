@@ -75,9 +75,23 @@
 [data-screen=detail] #balconyPanel figcaption,[data-screen=detail] .pdfLinks{color:#30383c;background:#e9ecec}
 [data-screen=detail] footer{color:#afb8bb}
 .orbit-viewport canvas{display:block;width:100%;height:100%}
-#app.side-lift{background:var(--lift-photo) center/cover no-repeat}
 #homeSky .sky-day,#homeSky .sky-dusk{width:165%;left:-4%;right:auto;background-size:cover;background-position:center;background-repeat:no-repeat}
 #homeSky .sky-day{animation:cloudCurrent 29s ease-in-out infinite alternate}
 #homeSky .sky-dusk{animation:cloudCurrent 29s ease-in-out infinite alternate,solarLight 16s linear infinite}
 @keyframes cloudCurrent{to{transform:translateX(-31%)}}
 .motion-off #homeSky :is(.sky-day,.sky-dusk){animation:none}
+#departureCloud{display:none;position:absolute;inset:0;z-index:19;pointer-events:none;background:url('assets/flight-clouds.webp') center/cover}
+.departing #departureCloud{display:block}
+.departing #welcome{opacity:0;transition:opacity .32s ease;pointer-events:none}
+#buildingEntry{transition:opacity .18s ease-out}
+.turning #buildingEntry{opacity:0;pointer-events:none}
+#planCamera{display:contents}
+.side-lift #planCamera{display:block;position:absolute;inset:0;transform-origin:0 0;will-change:transform,opacity}
+.side-lift #floorLayers{display:contents}
+.side-lift #floorBackdrop{z-index:1}
+.side-lift #planCamera{z-index:3}
+#liftSurroundings{display:none}
+.side-lift #liftSurroundings{display:block;position:absolute;inset:0;z-index:2;background-position:center;background-size:cover;pointer-events:none}
+#app.side-lift #buildingTransition.single-entry{background:transparent!important}
+.side-lift #buildingTransition.single-entry #buildingFallback{inset:0;width:100%;height:100%;max-height:none;object-fit:cover;mask-image:none}
+.side-lift #floorLayers,.side-lift #floorStage,.side-lift #hotspots polygon{pointer-events:none}

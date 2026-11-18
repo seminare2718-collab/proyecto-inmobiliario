@@ -38,32 +38,92 @@ function triangle(ctx,img,src,dst,indices){
  ctx.drawImage(img,0,0);ctx.restore();
 }
 
+// The same facade corners drive both textures. A single GPU draw keeps the
+// silhouette registered while previously hidden surfaces come into view.
+function drawOrbit(canvas,from,to,previous,next,faces){
+ const gl=canvas.getContext('webgl',{alpha:false,antialias:true,depth:false});
+ if(!gl)return null;
+ const program=gl.createProgram();
+ function shader(type,source){
+  const shader=gl.createShader(type);
+  gl.shaderSource(shader,source);gl.compileShader(shader);gl.attachShader(program,shader);
+  gl.deleteShader(shader);
+ }
+ shader(gl.VERTEX_SHADER,`attribute vec2 startPos,endPos,uvA,uvB;
+ uniform float travel; varying vec2 a,b;
+ void main(){a=uvA;b=uvB;gl_Position=vec4(mix(startPos,endPos,travel),0.,1.);}`);
+ shader(gl.FRAGMENT_SHADER,`precision mediump float;
+ uniform sampler2D first,second;uniform float travel;
+ varying vec2 a,b;
+ void main(){float mixAt=smoothstep(.28,.72,travel);
+ gl_FragColor=mix(texture2D(first,a),texture2D(second,b),mixAt);}`);
+ gl.linkProgram(program);
+ if(!gl.getProgramParameter(program,gl.LINK_STATUS)){gl.deleteProgram(program);return null;}
+ gl.useProgram(program);
+ const vertices=[];
+ for(const index of faces.flat()){
+  const a=previous[index],b=next[index];
+  vertices.push(2*a.x/canvas.width-1,1-2*a.y/canvas.height,
+   2*b.x/canvas.width-1,1-2*b.y/canvas.height,a.u/from.naturalWidth,a.v/from.naturalHeight,
+   b.u/to.naturalWidth,b.v/to.naturalHeight);
+ }
+ const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
+ gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(vertices),gl.STATIC_DRAW);
+ ['startPos','endPos','uvA','uvB'].forEach((name,index)=>{
+  const slot=gl.getAttribLocation(program,name);
+  gl.enableVertexAttribArray(slot);gl.vertexAttribPointer(slot,2,gl.FLOAT,false,32,index*8);
+ });
+ const textures=[from,to].map((image,index)=>{
+  const texture=gl.createTexture();gl.activeTexture(gl.TEXTURE0+index);gl.bindTexture(gl.TEXTURE_2D,texture);
+  for(const axis of [gl.TEXTURE_WRAP_S,gl.TEXTURE_WRAP_T])gl.texParameteri(gl.TEXTURE_2D,axis,gl.CLAMP_TO_EDGE);
+  for(const filter of [gl.TEXTURE_MIN_FILTER,gl.TEXTURE_MAG_FILTER])gl.texParameteri(gl.TEXTURE_2D,filter,gl.LINEAR);
+  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,image);
+  gl.uniform1i(gl.getUniformLocation(program,index?'second':'first'),index);return texture;
+ });
+ const travel=gl.getUniformLocation(program,'travel');
+ return {draw(t){gl.uniform1f(travel,t);gl.drawArrays(gl.TRIANGLES,0,vertices.length/8);},
+  dispose(){textures.forEach(texture=>gl.deleteTexture(texture));gl.deleteBuffer(buffer);gl.deleteProgram(program);
+   gl.getExtension('WEBGL_lose_context')?.loseContext();}};
+}
+
 export async function interpolateFacades(layer,from,to,start,end,duration,active){
  const canvas=document.createElement('canvas');
  const ratio=Math.min(1,1440/layer.clientWidth,960/layer.clientHeight);
  const w=canvas.width=Math.max(1,Math.round(layer.clientWidth*ratio));
  const h=canvas.height=Math.max(1,Math.round(layer.clientHeight*ratio));
  const previous=grid(from,start,w,h),next=grid(to,end,w,h);
- const buffer=document.createElement('canvas');buffer.width=w;buffer.height=h;
- const ctx=canvas.getContext('2d'),surface=buffer.getContext('2d');
  const faces=[];
  for(let row=0;row<3;row++)for(let col=0;col<6;col++){
   const i=row*7+col;faces.push([i,i+1,i+8],[i,i+8,i+7]);
  }
- layer.replaceChildren(canvas);
+ const gpu=drawOrbit(canvas,from,to,previous,next,faces);
+ const output=gpu?canvas:document.createElement('canvas');
+ let ctx,surface,buffer;
+ if(!gpu){
+  output.width=w;output.height=h;ctx=output.getContext('2d');
+  buffer=document.createElement('canvas');buffer.width=w;buffer.height=h;surface=buffer.getContext('2d');
+ }
+ layer.replaceChildren(output);
  const begin=performance.now();
  await new Promise(resolve=>{
   function render(now){
    if(!active())return resolve();
    const progress=Math.min(1,Math.max(0,(now-begin)/duration)),t=progress*progress*(3-2*progress);
+   if(gpu)gpu.draw(t);
+   else {
    const dst=previous.map((p,i)=>({x:p.x+(next[i].x-p.x)*t,y:p.y+(next[i].y-p.y)*t}));
    for(const ids of faces)triangle(ctx,from,previous,dst,ids);
    if(t>0){
     for(const ids of faces)triangle(surface,to,next,dst,ids);
-    ctx.globalAlpha=t;ctx.drawImage(buffer,0,0);ctx.globalAlpha=1;
+    const blend=Math.max(0,Math.min(1,(t-.28)/.44));
+    ctx.globalAlpha=blend*blend*(3-2*blend);ctx.drawImage(buffer,0,0);ctx.globalAlpha=1;
+   }
    }
    if(progress===1)resolve();else requestAnimationFrame(render);
   }
   render(begin);
  });
+ // Keep the decoded destination visible during GPU cleanup and the next leg.
+ if(active()){to.style.opacity='1';layer.replaceChildren(to);}
+ gpu?.dispose();
 }

@@ -1,4 +1,4 @@
-import { orbit, cancelTurn, flyToParcel, cancelArrival } from './showroom-camera.js?v=2';
+import { orbit, cancelTurn, flyToParcel, cancelArrival } from './showroom-camera.js?v=3';
 import { initContact } from './contact.js?v=20261030';
 import { openMaps, closeMaps } from './nearby-map.js?v=20261029';
 import { showGallery } from './gallery.js?v=unidades-20261110';
@@ -19,13 +19,70 @@ function setMode(value){mode=value;$('nightImage').style.opacity=value==='night'
 function startDayNightCycle(){
  clearInterval(cycleTimer);
  if(state!=='exterior'||reduced)return;
- cycleTimer=setInterval(()=>{if(!['home','exterior'].includes(state)||$('app').classList.contains('entering')||$('app').classList.contains('ascending'))return;setMode(mode==='day'?'night':'day');},12000);
+ cycleTimer=setInterval(()=>{if(turning||!['home','exterior'].includes(state)||$('app').classList.contains('entering')||$('app').classList.contains('ascending'))return;setMode(mode==='day'?'night':'day');},12000);
 }
 function sceneSource(images,period){const mobile=matchMedia('(max-width:650px)').matches;return mobile?images?.[period==='day'?'mobileDay':'mobileNight']||images?.[period]:images?.[period];}
-function setView(value, turn=false){const old=view, before=(mode==='day'?$('dayImage'):$('nightImage')).currentSrc;view=(value+3)%3;const front=state==='home',media=project.media||{},images=front?media.cover:media.exterior?.[view],suffix=matchMedia('(max-width:650px)').matches?'-mobile':'';$('dayImage').src=sceneSource(images,'day')||(front?`assets/scenes-20261116-v3/facade-dusk${suffix}.jpg`:`assets/exteriores-20261114/${3-view}.png`);$('nightImage').src=sceneSource(images,'night')||(front?`assets/scenes-20261116-v3/facade-dusk${suffix}.jpg`:`assets/exteriores-20261114/${3-view}N.png`);$('dayImage').alt=`Vista exterior ${view+1} del edificio, de día`;$('nightImage').alt=`Vista exterior ${view+1} del edificio, de noche`;document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.view===view));syncBackdrop();if(turn&&!reduced&&before&&old!==view){const photos=[0,1,2].map(i=>sceneSource(media.exterior?.[i],mode)||['facade','oblique-right','oblique-left'][i]);orbit(old,view,photos,before);}}
-function stopIntro(){const wasEntering=$('app').classList.contains('entering');cancelArrival();clearTimeout(introTimer);$('app').classList.remove('entering');$('intro').classList.remove('motion-ready');show('intro',false);if(state==='exterior'){show('exteriorControls',true);show('dayControls',true);show('floorsBtn',true);show('hint',true);if(wasEntering)startDayNightCycle();}}
-function route(next,keepBuildingTransition=false){cancelTurn();closeMaps();show('mapScreen',next==='map');if(!keepBuildingTransition)cancelBuildingEntry();stopIntro();clearInterval(cycleTimer);state=next;selected=null;hovered=null;$('app').dataset.screen=next;show('exteriorStage',next==='home'||next==='exterior');show('welcome',next==='home');show('back',next!=='home');show('context',next!=='home');show('floorsBtn',next==='exterior');show('dayControls',next==='exterior');show('exteriorControls',next==='exterior');show('floorStage',next==='floors');show('floorRail',next==='floors');show('floorCadBtn',next==='floors');show('details',false);show('unitPreview',false);show('hint',next==='floors'||next==='exterior');$('hint').textContent=next==='floors'?'Pasá el cursor o tocá una unidad':'Elegí un ángulo para recorrer el exterior';$('context').textContent=next==='floors'?context():next==='map'?'Mapa y cercanía':'Proyecto Inmobiliario';if(next==='home'){setView(0);setMode('day');}else if(next==='exterior'){setView(view);}else if(next==='floors'){floor=4;renderPlan();}else if(next==='map'){openMaps($('mapScreen'),(project.mapData||'assets/nearby-places-20261019.json')+'?v=20261029');}if(next==='home'||next==='exterior')startDayNightCycle();history.replaceState(null,'','#'+next);}
-function enter(){
+let orbitToken=0, turning=false, desiredView=0, requestFloorAfterTurn=false;
+function stopOrbit(){
+ orbitToken++;
+ turning=false;
+ requestFloorAfterTurn=false;
+ desiredView=view;
+ cancelTurn();
+ $('app').classList.remove('turning');
+}
+function exteriorPhoto(index,period){
+ const suffix=matchMedia('(max-width:650px)').matches?'-mobile':'';
+ const angle=['facade','oblique-right','oblique-left'][index];
+ return sceneSource(project.media?.exterior?.[index],period)||`assets/scenes-20261116-v3/${angle}-${period==='night'?'dusk':'day'}${suffix}.jpg`;
+}
+function displayView(index){
+ view=index;
+ const cover=state==='home';
+ for(const period of ['day','night']){
+  const image=$(period+'Image');
+  const src=cover?(sceneSource(project.media?.cover,period)||exteriorPhoto(0,period)):exteriorPhoto(view,period);
+  if(image.getAttribute('src')!==src)image.src=src;
+  image.alt=`Vista exterior ${view+1} del edificio, de ${period==='day'?'día':'noche'}`;
+ }
+ document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.view===view));
+ syncBackdrop();
+}
+async function setView(value,turn=false){
+ desiredView=(value+3)%3;
+ if(!turn||reduced){stopOrbit();displayView((value+3)%3);desiredView=view;return;}
+ if(turning||desiredView===view)return;
+ turning=true;
+ const token=++orbitToken;
+ $('app').classList.add('turning');
+ try{
+  while(view!==desiredView){
+   const target=desiredView, photos=[0,1,2].map(i=>exteriorPhoto(i,mode));
+   await orbit(view,target,photos,$(mode+'Image').currentSrc||photos[view]);
+   if(token!==orbitToken)return;
+   displayView(target);
+  }
+ }finally{
+  if(token===orbitToken){
+   turning=false;$('app').classList.remove('turning');
+   if(requestFloorAfterTurn){requestFloorAfterTurn=false;enterBuilding();}else startDayNightCycle();
+  }
+ }
+}
+function stopIntro(){departure?.cancel();departure=null;$('app').classList.remove('departing');const wasEntering=$('app').classList.contains('entering');cancelArrival();clearTimeout(introTimer);$('app').classList.remove('entering');$('intro').classList.remove('motion-ready');show('intro',false);if(state==='exterior'){show('exteriorControls',true);show('dayControls',true);show('floorsBtn',true);show('hint',true);if(wasEntering)startDayNightCycle();}}
+function route(next,keepBuildingTransition=false){stopOrbit();closeMaps();show('mapScreen',next==='map');if(!keepBuildingTransition)cancelBuildingEntry();stopIntro();clearInterval(cycleTimer);state=next;selected=null;hovered=null;$('app').dataset.screen=next;show('exteriorStage',next==='home'||next==='exterior');show('welcome',next==='home');show('back',next!=='home');show('context',next!=='home');show('floorsBtn',next==='exterior');show('dayControls',next==='exterior');show('exteriorControls',next==='exterior');show('floorStage',next==='floors');show('floorRail',next==='floors');show('floorCadBtn',next==='floors');show('details',false);show('unitPreview',false);show('hint',next==='floors'||next==='exterior');$('hint').textContent=next==='floors'?'Pasá el cursor o tocá una unidad':'Elegí un ángulo para recorrer el exterior';$('context').textContent=next==='floors'?context():next==='map'?'Mapa y cercanía':'Proyecto Inmobiliario';if(next==='home'){setView(0);setMode('day');}else if(next==='exterior'){setView(view);}else if(next==='floors'){floor=4;renderPlan();}else if(next==='map'){openMaps($('mapScreen'),(project.mapData||'assets/nearby-places-20261019.json')+'?v=20261029');}if(next==='home'||next==='exterior')startDayNightCycle();history.replaceState(null,'','#'+next);}
+let departure=null;
+async function enter(){
+ if(departure)return;
+ if(!reduced){
+  const veil=$('departureCloud');
+  $('app').classList.add('departing');
+  departure=veil.animate([
+   {opacity:0,transform:'scale(1.24) translateY(-5%)'},
+   {opacity:1,transform:'scale(1.03)'}
+  ],{duration:680,easing:'cubic-bezier(.4,0,.38,1)',fill:'both'});
+  try{await departure.finished;}catch{return;}
+ }
  route('exterior');setView(0);setMode('day');
  if(reduced)return;
  show('exteriorControls',false);show('dayControls',false);show('floorsBtn',false);show('hint',false);
@@ -99,6 +156,19 @@ const sideRoofs={
  desktop:[[[190,124],[416,124],[203,110]],[[196,118],[322,141],[248,101]],[[270,143],[392,119],[227,121]]],
  mobile:[[[60,232],[241,232],[70,223]],[[72,225],[179,247],[119,211]],[[117,246],[229,224],[80,225]]]
 };
+// Outer silhouette in the same render coordinates as the three roof anchors.
+const exteriorOutline={
+ desktop:[
+  [[190,122],[204,112],[284,112],[284,88],[300,83],[317,89],[317,112],[398,112],[416,122],[414,274],[191,274]],
+  [[196,119],[242,102],[242,94],[322,85],[334,92],[334,111],[380,118],[373,257],[322,291],[211,231]],
+  [[225,121],[270,111],[270,90],[279,85],[343,96],[346,102],[366,103],[394,119],[385,218],[270,262],[228,247]]
+ ],
+ mobile:[
+  [[59,230],[71,223],[136,223],[136,206],[149,198],[163,205],[163,223],[230,223],[242,231],[240,356],[61,356]],
+  [[72,225],[112,211],[112,204],[181,198],[189,204],[189,224],[229,231],[224,348],[178,374],[83,319]],
+  [[79,225],[118,216],[118,195],[126,191],[180,201],[188,207],[202,208],[233,223],[226,317],[117,355],[81,337]]
+ ]
+};
 function liftToPlan(photo){
  const w=$('app').clientWidth,h=$('app').clientHeight;
  const mobile=photo.currentSrc.includes('-mobile');
@@ -106,14 +176,19 @@ function liftToPlan(photo){
  const scale=Math.max(w/refWidth,h/refHeight);
  const [frontLeft,frontRight,backLeft]=sideRoofs[mobile?'mobile':'desktop'][view].map(
   ([x,y])=>[(w-refWidth*scale)/2+x*scale,(h-refHeight*scale)/2+y*scale]);
- const surface=$('floorLayers'),overlay=$('buildingTransition');
+ const surface=$('planCamera'),overlay=$('buildingTransition');
  const background=$('buildingFallback');
  background.src=photo.currentSrc;
- $('app').style.setProperty('--lift-photo',`url(${JSON.stringify(photo.currentSrc)})`);
  route('floors',true);
  $('app').classList.add('side-lift','ascending');
  overlay.classList.add('single-entry');
  show('buildingTransition',true);
+ const outline=exteriorOutline[mobile?'mobile':'desktop'][view].map(([x,y])=>
+  `${(w-refWidth*scale)/2+x*scale}px ${(h-refHeight*scale)/2+y*scale}px`);
+ background.style.clipPath=`polygon(${outline.join(',')})`;
+ const surroundings=$('liftSurroundings');
+ surroundings.style.backgroundImage=`url(${JSON.stringify(photo.currentSrc)})`;
+ surroundings.style.clipPath=`polygon(evenodd,0 0,100% 0,100% 100%,0 100%,0 0,${outline.join(',')},${outline[0]},0 0)`;
  positionLabels();
  const matrix=$('floorContent').getScreenCTM();
  const start=new DOMPoint(246,389).matrixTransform(matrix);
@@ -123,23 +198,30 @@ function liftToPlan(photo){
  const duration=2000,options={duration,easing:'cubic-bezier(.38,0,.22,1)',fill:'both'};
  surface.style.transformOrigin='0 0';
  // Both images follow the same roof edge throughout the turn.
- const steps=24, planFrames=[], photoFrames=[];
+ const steps=40, planFrames=[], photoFrames=[];
  const angle=Math.atan2(b,a), widthRatio=Math.hypot(a,b);
  for(let i=0;i<=steps;i++){
   const t=i/steps, u=1-t;
   const left=frontLeft[0]*u+start.x*t,top=frontLeft[1]*u+(start.y+targetHeight)*t;
   const factor=widthRatio*u+t,theta=angle*u;
   const ax=factor*Math.cos(theta),ay=factor*Math.sin(theta);
-  const cx=c*u,cy=d*u+t;
+  // Pitch around the front eave. The roof gains depth as the wall below
+  // it foreshortens; they share the same edge at every camera position.
+  const pitch=t*Math.PI/2, rise=Math.sin(pitch);
+  const cx=c*u,cy=d*u+rise;
   const fx=left-ax*start.x-cx*(start.y+targetHeight),fy=top-ay*start.x-cy*(start.y+targetHeight);
-  planFrames.push({transform:`matrix(${ax},${ay},${cx},${cy},${fx},${fy})`,opacity:Math.min(1,t*2.5)});
-  const px=factor/widthRatio*Math.cos(theta-angle),py=factor/widthRatio*Math.sin(theta-angle);
-  photoFrames.push({transform:`matrix(${px},${py},${-py},${px},${left-px*frontLeft[0]+py*frontLeft[1]},${top-py*frontLeft[0]-px*frontLeft[1]})`});
+  const reveal=Math.min(1,t*3);
+  planFrames.push({transform:`matrix(${ax},${ay},${cx},${cy},${fx},${fy})`,opacity:reveal*reveal*(3-2*reveal)});
+  const zoom=factor/widthRatio, wall=Math.cos(pitch)**2.4;
+  const x0=Math.cos(angle),y0=Math.sin(angle),x1=Math.cos(theta),y1=Math.sin(theta);
+  const m=zoom*(x1*x0+wall*y1*y0),n=zoom*(y1*x0-wall*x1*y0);
+  const p=zoom*(x1*y0-wall*y1*x0),q=zoom*(y1*y0+wall*x1*x0);
+  photoFrames.push({transform:`matrix(${m},${n},${p},${q},${left-m*frontLeft[0]-p*frontLeft[1]},${top-n*frontLeft[0]-q*frontLeft[1]})`});
  }
  sideMotions=[
   surface.animate(planFrames,options),
-  $('floorBackdrop').animate([{opacity:0},{opacity:0,offset:.24},{opacity:1}],options),
-  overlay.animate([{opacity:1},{opacity:1,offset:.3},{opacity:0}],options),
+  surroundings.animate([{opacity:1,transform:'scale(1)'},{opacity:0,transform:'scale(1.14) translateY(-8%)',offset:.58},{opacity:0,transform:'scale(1.14) translateY(-8%)'}],options),
+  overlay.animate([{opacity:1},{opacity:1,offset:.31},{opacity:0,offset:.71},{opacity:0}],options),
   overlay.animate(photoFrames,options)
  ];
  buildingTimer=setTimeout(()=>{cancelBuildingEntry();positionLabels();},duration);
@@ -148,7 +230,7 @@ function cancelBuildingEntry(){clearSideLift();clearTimeout(buildingTimer);show(
 function finishBuildingEntry(){if(sideMotions.length){cancelBuildingEntry();positionLabels();return;}if(!$('app').classList.contains('ascending'))return;clearTimeout(buildingTimer);route('floors',true);$('app').classList.remove('ascending');$('buildingTransition').classList.add('reveal-floor');buildingTimer=setTimeout(cancelBuildingEntry,350);}
 function enterBuilding(){
  if(state!=='exterior'||$('app').classList.contains('ascending'))return;
- cancelTurn();
+ if(turning){requestFloorAfterTurn=true;return;}
  stopIntro();
  clearInterval(cycleTimer);
  const activePhoto=mode==='night'?$('nightImage'):$('dayImage');
@@ -158,12 +240,12 @@ function enterBuilding(){
 function openFloorCad(){const groundFloor=floor===0,base=groundFloor?'floor-ground':'floor-high';$('floorCadTitle').textContent=(groundFloor?'Planta baja':'Piso '+floor)+' · Plano CAD';$('floorCadOpen').href=`assets/${base}.pdf`;$('floorCadDownload').href=`assets/${base}.pdf`;$('floorCadPreview').src=`assets/cad-${groundFloor?'ground':'high'}.png`;$('floorCadPreview').alt='Plano CAD de la planta completa';$('floorCadPreview').parentElement.classList.remove('zoomed');$('floorCad').showModal();}
 $('floorCadBtn').onclick=openFloorCad;$('floorCadPreview').onclick=()=>$('floorCadPreview').parentElement.classList.toggle('zoomed');$('skipBuilding').onclick=finishBuildingEntry;
 function syncMotion(){document.documentElement.classList.toggle('motion-off',reduced);$('motionToggle').textContent=reduced?'Animaciones desactivadas · Activar':'Animaciones activadas · Desactivar';$('motionToggle').setAttribute('aria-pressed',String(!reduced));}
-syncMotion();$('motionToggle').onclick=()=>{reduced=!reduced;localStorage.setItem('seminare-motion',reduced?'off':'on');syncMotion();if(reduced){stopIntro();cancelBuildingEntry();}};
-$('enter').onclick=enter;$('skipIntro').onclick=stopIntro;$('floorsBtn').onclick=$('buildingEntry').onclick=enterBuilding;$('back').onclick=()=>{if(state==='detail'){const f=floor;route('floors');setFloor(f);}else route(state==='floors'?'exterior':'home');};$('day').onclick=()=>{setMode('day');startDayNightCycle();};$('night').onclick=()=>{setMode('night');startDayNightCycle();};$('previous').onclick=()=>setView(view-1,true);$('next').onclick=()=>setView(view+1,true);$('exteriorStage').onclick=()=>{if(state==='exterior'&&!$('app').classList.contains('entering')&&!$('app').classList.contains('ascending'))setView(view+1,true);};$('closePreview').onclick=closePreview;$('moreDetails').onclick=openDetails;initContact(()=>({email:project.contactEmail,unit:unitTitle(selected)}));document.querySelectorAll('[data-floor]').forEach(b=>b.onclick=()=>setFloor(+b.dataset.floor));document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>selectTab(b.dataset.tab));$('mediaTabs').onkeydown=e=>{const tabs=[...document.querySelectorAll('[data-tab]')].filter(b=>!b.hidden),i=tabs.findIndex(b=>b.dataset.tab===activeTab);let n;if(['ArrowDown','ArrowRight'].includes(e.key))n=(i+1)%tabs.length;if(['ArrowUp','ArrowLeft'].includes(e.key))n=(i+tabs.length-1)%tabs.length;if(e.key==='Home')n=0;if(e.key==='End')n=tabs.length-1;if(n!==undefined){e.preventDefault();selectTab(tabs[n].dataset.tab);tabs[n].focus();}};$('pdfPreview').onclick=()=>{$('pdfPreview').parentElement.classList.toggle('zoomed');};
+syncMotion();$('motionToggle').onclick=()=>{reduced=!reduced;localStorage.setItem('seminare-motion',reduced?'off':'on');syncMotion();if(reduced){setView(desiredView);stopIntro();cancelBuildingEntry();}};
+$('enter').onclick=enter;$('skipIntro').onclick=stopIntro;$('floorsBtn').onclick=$('buildingEntry').onclick=enterBuilding;$('back').onclick=()=>{if(state==='detail'){const f=floor;route('floors');setFloor(f);}else route(state==='floors'?'exterior':'home');};$('day').onclick=()=>{setMode('day');startDayNightCycle();};$('night').onclick=()=>{setMode('night');startDayNightCycle();};$('previous').onclick=()=>setView(desiredView-1,true);$('next').onclick=()=>setView(desiredView+1,true);$('exteriorStage').onclick=()=>{if(state==='exterior'&&!$('app').classList.contains('entering')&&!$('app').classList.contains('ascending'))setView(desiredView+1,true);};$('closePreview').onclick=closePreview;$('moreDetails').onclick=openDetails;initContact(()=>({email:project.contactEmail,unit:unitTitle(selected)}));document.querySelectorAll('[data-floor]').forEach(b=>b.onclick=()=>setFloor(+b.dataset.floor));document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>selectTab(b.dataset.tab));$('mediaTabs').onkeydown=e=>{const tabs=[...document.querySelectorAll('[data-tab]')].filter(b=>!b.hidden),i=tabs.findIndex(b=>b.dataset.tab===activeTab);let n;if(['ArrowDown','ArrowRight'].includes(e.key))n=(i+1)%tabs.length;if(['ArrowUp','ArrowLeft'].includes(e.key))n=(i+tabs.length-1)%tabs.length;if(e.key==='Home')n=0;if(e.key==='End')n=tabs.length-1;if(n!==undefined){e.preventDefault();selectTab(tabs[n].dataset.tab);tabs[n].focus();}};$('pdfPreview').onclick=()=>{$('pdfPreview').parentElement.classList.toggle('zoomed');};
 $('fullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}catch{$('notice').textContent='Usá la opción de pantalla completa de tu navegador.';show('notice',true);setTimeout(()=>show('notice',false),3500);}};
 $('menuBtn').onclick=()=>{$('menu').showModal();$('menuBtn').setAttribute('aria-expanded','true');};$('menu').onclose=()=>$('menuBtn').setAttribute('aria-expanded','false');document.querySelectorAll('dialog .close').forEach(b=>b.onclick=()=>b.closest('dialog').close());document.querySelectorAll('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close();}}));document.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>{$('menu').close();const dest=b.dataset.nav==='location'?'map':b.dataset.nav;if(['home','exterior','floors','map'].includes(dest))route(dest);else{$('infoContent').innerHTML="<p class=\"eyebrow\">PROYECTO INMOBILIARIO</p><h2>Sobre este proyecto</h2><p>Este proyecto consiste en una propuesta arquitectónica de un edificio de uso mixto, que combina locales comerciales en planta baja con departamentos en los niveles superiores. Su diseño busca aprovechar los espacios de manera eficiente, integrando las actividades comerciales y residenciales en un mismo edificio.</p><p>El proyecto nació como nuestro Trabajo Práctico Integrador (TPI), correspondiente al último año de la formación de Maestro Mayor de Obras. Comenzamos desde cero, desarrollando la idea inicial, la distribución de los espacios, el diseño arquitectónico, la estructura y las distintas instalaciones, hasta llegar a la elaboración de los planos técnicos y el modelado tridimensional.</p><p>Desde el principio, nuestro objetivo fue ir más allá de lo estético. Buscamos desarrollar un edificio que no solo tuviera una buena apariencia, sino que también fuera <strong>funcional, seguro y realmente posible de construir</strong>, teniendo en cuenta las condiciones climáticas, los sistemas constructivos y las particularidades de Tierra del Fuego.</p><p>Este trabajo nos permitió aplicar los conocimientos adquiridos durante nuestra formación, pero también aprender muchas cosas que solo pudimos comprender al enfrentarnos a un proyecto de esta magnitud. A medida que avanzábamos, fuimos descubriendo nuevas posibilidades, identificando aspectos que podríamos mejorar y entendiendo cómo distintas decisiones influyen tanto en la estética como en la funcionalidad del edificio.</p><p>Más allá del resultado final, nos llevamos una experiencia que nos permitió desarrollar una mirada más crítica y completa sobre la arquitectura y la construcción. Hoy sabemos que hay muchas cosas que haríamos de otra manera, y justamente ese aprendizaje es el que nos permitirá afrontar futuros proyectos con más conocimientos, experiencia y mejores resultados.</p><p class=\"about-contact\">Contacto: <a href=\"mailto:seminare2718@gmail.com\">seminare2718@gmail.com</a></p>";$('info').showModal();}});
 window.addEventListener('hashchange',()=>{if(location.hash==='#home'){document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());route('home');}});
-window.addEventListener('resize',()=>{positionLabels();if(state==='home'||state==='exterior')setView(view);});new ResizeObserver(positionLabels).observe($('floorStage'));window.addEventListener('keydown',e=>{if(document.querySelector('dialog[open]'))return;if(state==='exterior'&&!$('app').classList.contains('entering')&&!$('app').classList.contains('ascending')){if(e.key==='ArrowLeft')setView(view-1,true);if(e.key==='ArrowRight')setView(view+1,true);}});
+window.addEventListener('resize',()=>{positionLabels();if(state==='home'||state==='exterior')setView(view);});new ResizeObserver(positionLabels).observe($('floorStage'));window.addEventListener('keydown',e=>{if(document.querySelector('dialog[open]'))return;if(state==='exterior'&&!$('app').classList.contains('entering')&&!$('app').classList.contains('ascending')){if(e.key==='ArrowLeft')setView(desiredView-1,true);if(e.key==='ArrowRight')setView(desiredView+1,true);}});
 
 const floorOutlines={
  high:'756,17 914,17 914,77 1274,77 1274,137 1537,137 1542,356 1524,356 1524,526 1555,526 1562,769 1300,769 1300,850 912,850 912,788 754,788 754,850 370,850 370,769 106,769 117,525 145,525 145,356 128,356 136,136 380,136 380,77 756,77',

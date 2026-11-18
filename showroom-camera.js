@@ -1,4 +1,4 @@
-import {interpolateFacades} from './facade-turn.js?v=1';
+import {interpolateFacades} from './facade-turn.js?v=2';
 const byId = id => document.getElementById(id);
 let turnLayer, turnNumber = 0;
 
@@ -25,11 +25,9 @@ export async function orbit(previous, next, photos, firstPhoto) {
       const from = new Image(), to = new Image();
       from.src = original;
       to.src = photos[stop];
-      layer.replaceChildren(from, to);
-      to.style.opacity = '0';
       await Promise.all([from.decode(), to.decode()]);
       if (run !== turnNumber) return;
-      await interpolateFacades(layer, from, to, currentView, stop, stops.length === 2 ? 500 : 760, () => run === turnNumber);
+      await interpolateFacades(layer, from, to, currentView, stop, stops.length === 2 ? 400 : 620, () => run === turnNumber);
       currentView = stop;
       if (run !== turnNumber) return;
       original = to.src;
