@@ -12,7 +12,7 @@ const units=()=>floor===0?ground:floorUnits[floor];const unitId=i=>floor===0?`PB
 function data(i){return project.units.find(u=>u.id===unitId(i))||{status:'available',rooms:floor===0?null:2,bedrooms:floor===0?0:1,bathrooms:1,balcony:floor===0?false:true,kitchen:floor===0?'Office':'Sí'};}
 function status(i){const u=data(i);return {label:({available:'Disponible',sold:'Vendida',reserved:'Reservada'})[u.status]||'Disponibilidad a confirmar',color:({available:'#1dac70',sold:'#e92236',reserved:'#c18d38'})[u.status]||'#ba913e'};}
 const show=(id,on)=>$(id).hidden=!on;function context(){return floor===0?'Planta baja · Locales comerciales':`Piso ${floor} · 4 departamentos`;}
-fetch('./project.json?v=20261117-views').then(r=>r.json()).then(async d=>{project=d;if(d.availabilityEndpoint){try{const r=await fetch(d.availabilityEndpoint);if(!r.ok)throw Error(r.status);const rows=await r.json();if(Array.isArray(rows))project.units=project.units.map(u=>({...u,...rows.find(v=>v.id===u.id)}));}catch(e){console.warn('Disponibilidad pendiente',e);}}applyMedia();if(state==='floors')renderPlan();else if(state==='detail')openDetails();}).catch(console.error);
+fetch('./project.json?v=20261117-motion').then(r=>r.json()).then(async d=>{project=d;if(d.availabilityEndpoint){try{const r=await fetch(d.availabilityEndpoint);if(!r.ok)throw Error(r.status);const rows=await r.json();if(Array.isArray(rows))project.units=project.units.map(u=>({...u,...rows.find(v=>v.id===u.id)}));}catch(e){console.warn('Disponibilidad pendiente',e);}}applyMedia();if(state==='floors')renderPlan();else if(state==='detail')openDetails();}).catch(console.error);
 function syncBackdrop(){const current=mode==='night'?$('nightImage'):$('dayImage');$('exteriorStage').style.setProperty('--scene-image',`url(${JSON.stringify(current.src)})`);}
 function setMode(value){mode=value;$('nightImage').style.opacity=value==='night'?'1':'0';$('day').setAttribute('aria-pressed',value==='day');$('night').setAttribute('aria-pressed',value==='night');syncBackdrop();}
 function startDayNightCycle(){
@@ -92,20 +92,26 @@ function selectTab(tab){
  }
 }
 let buildingTimer=null;
-function cancelBuildingEntry(){buildingRun++;clearTimeout(buildingTimer);show('buildingTransition',false);$('buildingTransition').classList.remove('reveal-floor','single-entry');$('app').classList.remove('ascending');}
-function finishBuildingEntry(){if(!$('app').classList.contains('ascending'))return;clearTimeout(buildingTimer);route('floors',true);$('app').classList.remove('ascending');$('buildingTransition').classList.add('reveal-floor');buildingTimer=setTimeout(cancelBuildingEntry,800);}
+function cancelBuildingEntry(){buildingRun++;clearTimeout(buildingTimer);$('buildingVideo').pause();show('buildingTransition',false);$('buildingTransition').classList.remove('reveal-floor','single-entry','motion-ready');$('app').classList.remove('ascending');}
+function finishBuildingEntry(){if(!$('app').classList.contains('ascending'))return;clearTimeout(buildingTimer);route('floors',true);$('app').classList.remove('ascending');$('buildingTransition').classList.add('reveal-floor');buildingTimer=setTimeout(cancelBuildingEntry,350);}
 function enterBuilding(){
  if(state!=='exterior'||$('app').classList.contains('ascending'))return;
  stopIntro();if(reduced){route('floors');return;}clearInterval(cycleTimer);const run=++buildingRun;
  const poster=project.media?.exterior?.[view]?.[mode]||`assets/exteriores-20261114/${3-view}.png`;
  $('buildingFallback').src=sceneSource(project.media?.exterior?.[view],mode)||poster;
- const firstAngle=view===1?2:1,secondAngle=view===2?1:2;
- $('buildingOblique').src=sceneSource(project.media?.exterior?.[firstAngle],mode)||`assets/exteriores-20261114/${mode==='night'?'2N':'2'}.png`;
- $('buildingAerial').src=sceneSource(project.media?.exterior?.[secondAngle],mode)||`assets/exteriores-20261114/${mode==='night'?'1N':'1'}.png`;
- $('buildingTop').src='assets/plans-20261116-v2/planta-tipo.png';
  $('app').classList.add('ascending');show('buildingTransition',true);
  $('buildingTransition').classList.add('single-entry');
- buildingTimer=setTimeout(()=>{if(run===buildingRun)finishBuildingEntry();},6200);
+ const video=$('buildingVideo');video.currentTime=0;
+ video.onplaying=()=>{
+  if(run!==buildingRun){video.pause();return;}
+  $('buildingTransition').classList.add('motion-ready');
+  clearTimeout(buildingTimer);
+  buildingTimer=setTimeout(()=>{if(run===buildingRun)finishBuildingEntry();},1650);
+ };
+ video.onended=()=>{if(run===buildingRun)finishBuildingEntry();};
+ video.onerror=()=>{if(run===buildingRun)finishBuildingEntry();};
+ video.play().catch(()=>{if(run===buildingRun)finishBuildingEntry();});
+ buildingTimer=setTimeout(()=>{if(run===buildingRun)finishBuildingEntry();},4000);
 }
 function openFloorCad(){const groundFloor=floor===0,base=groundFloor?'floor-ground':'floor-high';$('floorCadTitle').textContent=(groundFloor?'Planta baja':'Piso '+floor)+' · Plano CAD';$('floorCadOpen').href=`assets/${base}.pdf`;$('floorCadDownload').href=`assets/${base}.pdf`;$('floorCadPreview').src=`assets/cad-${groundFloor?'ground':'high'}.png`;$('floorCadPreview').alt='Plano CAD de la planta completa';$('floorCadPreview').parentElement.classList.remove('zoomed');$('floorCad').showModal();}
 $('floorCadBtn').onclick=openFloorCad;$('floorCadPreview').onclick=()=>$('floorCadPreview').parentElement.classList.toggle('zoomed');$('skipBuilding').onclick=finishBuildingEntry;

@@ -23,3 +23,11 @@
 [data-screen="detail"] #detailFields>div{border-color:#d7dcdf}
 [data-screen="detail"] dt,[data-screen="detail"] .fine{color:#616a70}
 @media(max-width:650px){[data-screen="detail"] #mediaTabs{background:#dce0e3}}
+
+/* A single camera shot blends into the already rendered, interactive floor. */
+#buildingTransition{transition:opacity .35s ease!important}
+#buildingTransition.single-entry #buildingFallback{animation:none!important;opacity:1;transform:none!important}
+#buildingTransition.single-entry #buildingOblique,#buildingTransition.single-entry #buildingAerial,#buildingTransition.single-entry #buildingTop{display:none!important}
+#buildingTransition #buildingVideo{display:block!important;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:4;opacity:0;transition:opacity .15s ease}
+#buildingTransition.motion-ready #buildingVideo{opacity:1}
+#buildingTransition #skipBuilding{z-index:5}
