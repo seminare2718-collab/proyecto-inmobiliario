@@ -31,3 +31,8 @@
 #buildingTransition #buildingVideo{display:block!important;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:4;opacity:0;transition:opacity .15s ease}
 #buildingTransition.motion-ready #buildingVideo{opacity:1}
 #buildingTransition #skipBuilding{z-index:5}
+#floorLayers{display:contents}
+.side-lift #floorLayers{display:block;position:absolute;inset:0;z-index:3;pointer-events:none;will-change:transform,opacity}
+.side-lift #buildingTransition{z-index:2;transform-origin:0 0;pointer-events:none}
+.side-lift #buildingTransition #buildingVideo,.side-lift #skipBuilding{display:none!important}
+.side-lift :is(#floorRail,#planLabels,#floorCadBtn,#hint,#context,footer){visibility:hidden}
