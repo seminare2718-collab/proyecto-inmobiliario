@@ -36,3 +36,48 @@
 .side-lift #buildingTransition{z-index:2;transform-origin:0 0;pointer-events:none}
 .side-lift #buildingTransition #buildingVideo,.side-lift #skipBuilding{display:none!important}
 .side-lift :is(#floorRail,#planLabels,#floorCadBtn,#hint,#context,footer){visibility:hidden}
+
+#homeSky::before,#homeSky::after{content:none}
+#homeSky{mask-image:linear-gradient(#000 0 16%,transparent 24%)}
+#homeSky i{position:absolute;display:block}
+.sky-day,.sky-dusk{inset:0 0 auto;height:25%;background-size:auto 100%;background-repeat:repeat-x}
+.sky-day{background-image:url('assets/sky-day.webp');animation:skyDrift 32s linear infinite}
+.sky-dusk{background-image:url('assets/sky-dusk.webp');animation:skyDrift 32s linear infinite,solarLight 16s linear infinite}
+[data-screen=home] #nightImage{animation:solarLight 16s linear infinite;transition:none!important}
+.sun-disc{width:clamp(12px,1.45vw,26px);aspect-ratio:1;left:15%;top:10%;border-radius:50%;background:#fff6cd;box-shadow:0 0 22px 9px #ffe9a697,0 0 72px 28px #ffcf6538;animation:solarArc 16s linear infinite}
+@keyframes skyDrift{to{background-position-x:calc(-3.2 * 25dvh)}}
+@keyframes solarLight{0%,100%{opacity:.12}25%{opacity:0}48%{opacity:.34}67%{opacity:.96}80%{opacity:1}}
+@keyframes solarArc{0%{transform:translate(0,1vh);opacity:.8}25%{transform:translate(18vw,-4vh);opacity:1}50%{transform:translate(40vw,-1vh);opacity:.88}67%{transform:translate(55vw,7vh);opacity:0}82%{transform:translate(-15vw,8vh);opacity:0}100%{transform:translate(0,1vh);opacity:.8}}
+@media(max-width:650px){#homeSky{mask-image:linear-gradient(#000 0 25%,transparent 36%)}.sky-day,.sky-dusk{height:36%;animation-name:mobileDrift}.sky-dusk{animation-name:mobileDrift,solarLight}@keyframes mobileDrift{to{background-position-x:-115.2dvh}}}
+.motion-off :is(.sun-disc,.sky-day,.sky-dusk),.motion-off [data-screen=home] #nightImage{animation:none}
+.motion-off .sky-dusk{opacity:0}
+.orbit-viewport,.orbit-viewport img{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.orbit-viewport{z-index:2;overflow:hidden}
+.orbit-viewport img{object-fit:cover;will-change:transform,opacity}
+#parcelOrtho,#skyPass{position:absolute;inset:0;pointer-events:none;background-position:center;background-size:cover}
+#parcelOrtho{background-image:url('assets/site-arrival-aerial.webp');transform-origin:50% 50%;z-index:1}
+#parcelOrtho img{width:100%;height:100%;display:block;object-fit:cover}
+#skyPass{z-index:3;background-image:url('assets/flight-clouds.webp');mask-image:radial-gradient(ellipse at 50% 50%,transparent var(--opening,-42%),#000 calc(var(--opening,-42%) + 39%))}
+@property --opening{syntax:'<percentage>';inherits:false;initial-value:-42%}
+#mapCredit{position:absolute;right:10px;bottom:8px;z-index:5;color:white;background:#121920af;font:10px/1.35 system-ui;padding:3px 7px;border-radius:4px;pointer-events:none}
+#intro #arrivalVideo{object-fit:cover!important;transition:none}
+#app[data-screen=detail]{background:#20272b;color:#edf0f1}
+[data-screen=detail] #unitInfo{background:#2a3237;color:#f3f1ec;box-shadow:0 12px 36px #0002}
+[data-screen=detail] #detailMedia{background:#343c40}
+[data-screen=detail] #detailFields>div{border-color:#475056}
+[data-screen=detail] :is(dt,.fine,.eyebrow){color:#b9c3c7}
+[data-screen=detail] :is(#detailFields dd,#detailName){color:#f3f1ec}
+[data-screen=detail] #mediaTabs{background:transparent}
+[data-screen=detail] #mediaTabs button{background:#343d42;color:#dbe1e2}
+[data-screen=detail] #mediaTabs button[aria-selected=true]{background:#c4a46c;color:#191d1f}
+[data-screen=detail] #contactBtn{background:#e2c28d;color:#211e18}
+[data-screen=detail] #detailStatus{background:#f2f4f1!important}
+[data-screen=detail] #balconyPanel figcaption,[data-screen=detail] .pdfLinks{color:#30383c;background:#e9ecec}
+[data-screen=detail] footer{color:#afb8bb}
+.orbit-viewport canvas{display:block;width:100%;height:100%}
+#app.side-lift{background:var(--lift-photo) center/cover no-repeat}
+#homeSky .sky-day,#homeSky .sky-dusk{width:165%;left:-4%;right:auto;background-size:cover;background-position:center;background-repeat:no-repeat}
+#homeSky .sky-day{animation:cloudCurrent 29s ease-in-out infinite alternate}
+#homeSky .sky-dusk{animation:cloudCurrent 29s ease-in-out infinite alternate,solarLight 16s linear infinite}
+@keyframes cloudCurrent{to{transform:translateX(-31%)}}
+.motion-off #homeSky :is(.sky-day,.sky-dusk){animation:none}

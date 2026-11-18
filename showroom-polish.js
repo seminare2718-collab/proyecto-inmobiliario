@@ -1,5 +1,5 @@
 const app=document.getElementById('app'),stage=document.getElementById('exteriorStage');
-const sky=document.createElement('div');sky.id='homeSky';sky.setAttribute('aria-hidden','true');stage.append(sky);
+const sky=document.createElement('div');sky.id='homeSky';sky.setAttribute('aria-hidden','true');sky.innerHTML='<i class="sky-day"></i><i class="sky-dusk"></i><i class="sun-disc"></i>';stage.append(sky);
 const night=document.getElementById('night');
 const syncSky=()=>app.classList.toggle('home-night',night.getAttribute('aria-pressed')==='true');
 new MutationObserver(syncSky).observe(night,{attributes:true,attributeFilter:['aria-pressed']});syncSky();
