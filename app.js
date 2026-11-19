@@ -1,4 +1,5 @@
-import { orbit, cancelTurn, flyToParcel, cancelArrival } from './showroom-camera.js?v=3';
+import { orbit, cancelTurn, flyToParcel, cancelArrival, prepareExterior } from './showroom-camera.js?v=4';
+import { prepareParcel } from './parcel-imagery.js?v=1';
 import { initContact } from './contact.js?v=20261030';
 import { openMaps, closeMaps } from './nearby-map.js?v=20261029';
 import { showGallery } from './gallery.js?v=unidades-20261110';
@@ -22,11 +23,10 @@ function startDayNightCycle(){
  cycleTimer=setInterval(()=>{if(turning||!['home','exterior'].includes(state)||$('app').classList.contains('entering')||$('app').classList.contains('ascending'))return;setMode(mode==='day'?'night':'day');},12000);
 }
 function sceneSource(images,period){const mobile=matchMedia('(max-width:650px)').matches;return mobile?images?.[period==='day'?'mobileDay':'mobileNight']||images?.[period]:images?.[period];}
-let orbitToken=0, turning=false, desiredView=0, requestFloorAfterTurn=false;
+let orbitToken=0, turning=false, desiredView=0;
 function stopOrbit(){
  orbitToken++;
  turning=false;
- requestFloorAfterTurn=false;
  desiredView=view;
  cancelTurn();
  $('app').classList.remove('turning');
@@ -65,22 +65,30 @@ async function setView(value,turn=false){
  }finally{
   if(token===orbitToken){
    turning=false;$('app').classList.remove('turning');
-   if(requestFloorAfterTurn){requestFloorAfterTurn=false;enterBuilding();}else startDayNightCycle();
+   startDayNightCycle();
   }
  }
 }
 function stopIntro(){departure?.cancel();departure=null;$('app').classList.remove('departing');const wasEntering=$('app').classList.contains('entering');cancelArrival();clearTimeout(introTimer);$('app').classList.remove('entering');$('intro').classList.remove('motion-ready');show('intro',false);if(state==='exterior'){show('exteriorControls',true);show('dayControls',true);show('floorsBtn',true);show('hint',true);if(wasEntering)startDayNightCycle();}}
 function route(next,keepBuildingTransition=false){stopOrbit();closeMaps();show('mapScreen',next==='map');if(!keepBuildingTransition)cancelBuildingEntry();stopIntro();clearInterval(cycleTimer);state=next;selected=null;hovered=null;$('app').dataset.screen=next;show('exteriorStage',next==='home'||next==='exterior');show('welcome',next==='home');show('back',next!=='home');show('context',next!=='home');show('floorsBtn',next==='exterior');show('dayControls',next==='exterior');show('exteriorControls',next==='exterior');show('floorStage',next==='floors');show('floorRail',next==='floors');show('floorCadBtn',next==='floors');show('details',false);show('unitPreview',false);show('hint',next==='floors'||next==='exterior');$('hint').textContent=next==='floors'?'Pasá el cursor o tocá una unidad':'Elegí un ángulo para recorrer el exterior';$('context').textContent=next==='floors'?context():next==='map'?'Mapa y cercanía':'Proyecto Inmobiliario';if(next==='home'){setView(0);setMode('day');}else if(next==='exterior'){setView(view);}else if(next==='floors'){floor=4;renderPlan();}else if(next==='map'){openMaps($('mapScreen'),(project.mapData||'assets/nearby-places-20261019.json')+'?v=20261029');}if(next==='home'||next==='exterior')startDayNightCycle();history.replaceState(null,'','#'+next);}
 let departure=null;
+function prewarmShowroom(){
+ if(reduced||!['home','exterior'].includes(state))return;
+ prepareExterior().catch(()=>{});
+ if(state==='home')prepareParcel();
+}
+if('requestIdleCallback' in window)requestIdleCallback(prewarmShowroom,{timeout:1600});
+else setTimeout(prewarmShowroom,500);
 async function enter(){
  if(departure)return;
  if(!reduced){
+  prepareParcel();
   const veil=$('departureCloud');
   $('app').classList.add('departing');
   departure=veil.animate([
    {opacity:0,transform:'scale(1.24) translateY(-5%)'},
    {opacity:1,transform:'scale(1.03)'}
-  ],{duration:680,easing:'cubic-bezier(.4,0,.38,1)',fill:'both'});
+  ],{duration:390,easing:'cubic-bezier(.4,0,.38,1)',fill:'both'});
   try{await departure.finished;}catch{return;}
  }
  route('exterior');setView(0);setMode('day');
@@ -195,7 +203,7 @@ function liftToPlan(photo){
  const targetWidth=1061*matrix.a,targetHeight=438*matrix.d;
  const a=(frontRight[0]-frontLeft[0])/targetWidth,b=(frontRight[1]-frontLeft[1])/targetWidth;
  const c=(frontLeft[0]-backLeft[0])/targetHeight,d=(frontLeft[1]-backLeft[1])/targetHeight;
- const duration=2000,options={duration,easing:'cubic-bezier(.38,0,.22,1)',fill:'both'};
+ const duration=1500,options={duration,easing:'cubic-bezier(.35,0,.22,1)',fill:'both'};
  surface.style.transformOrigin='0 0';
  // Both images follow the same roof edge throughout the turn.
  const steps=40, planFrames=[], photoFrames=[];
@@ -230,7 +238,7 @@ function cancelBuildingEntry(){clearSideLift();clearTimeout(buildingTimer);show(
 function finishBuildingEntry(){if(sideMotions.length){cancelBuildingEntry();positionLabels();return;}if(!$('app').classList.contains('ascending'))return;clearTimeout(buildingTimer);route('floors',true);$('app').classList.remove('ascending');$('buildingTransition').classList.add('reveal-floor');buildingTimer=setTimeout(cancelBuildingEntry,350);}
 function enterBuilding(){
  if(state!=='exterior'||$('app').classList.contains('ascending'))return;
- if(turning){requestFloorAfterTurn=true;return;}
+ if(turning)stopOrbit();
  stopIntro();
  clearInterval(cycleTimer);
  const activePhoto=mode==='night'?$('nightImage'):$('dayImage');

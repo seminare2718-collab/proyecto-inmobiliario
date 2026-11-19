@@ -16,13 +16,7 @@
 
 #intro #arrivalVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:4;opacity:0;transition:opacity .35s}#intro.motion-ready #arrivalVideo{opacity:1}#intro #skipIntro{z-index:5}
 
-/* Gray surroundings keep unit cards and imagery distinct. */
-[data-screen="detail"]{background:#dce0e3}
-[data-screen="detail"] #detailMedia{background:#e8ebed}
-[data-screen="detail"] #unitInfo{background:#f4f5f6;box-shadow:0 6px 24px #26323b12}
-[data-screen="detail"] #detailFields>div{border-color:#d7dcdf}
-[data-screen="detail"] dt,[data-screen="detail"] .fine{color:#616a70}
-@media(max-width:650px){[data-screen="detail"] #mediaTabs{background:#dce0e3}}
+#app[data-screen=detail]{background:white;color:#252525}
 
 /* A single camera shot blends into the already rendered, interactive floor. */
 #buildingTransition{transition:opacity .35s ease!important}
@@ -61,19 +55,6 @@
 @property --opening{syntax:'<percentage>';inherits:false;initial-value:-42%}
 #mapCredit{position:absolute;right:10px;bottom:8px;z-index:5;color:white;background:#121920af;font:10px/1.35 system-ui;padding:3px 7px;border-radius:4px;pointer-events:none}
 #intro #arrivalVideo{object-fit:cover!important;transition:none}
-#app[data-screen=detail]{background:#20272b;color:#edf0f1}
-[data-screen=detail] #unitInfo{background:#2a3237;color:#f3f1ec;box-shadow:0 12px 36px #0002}
-[data-screen=detail] #detailMedia{background:#343c40}
-[data-screen=detail] #detailFields>div{border-color:#475056}
-[data-screen=detail] :is(dt,.fine,.eyebrow){color:#b9c3c7}
-[data-screen=detail] :is(#detailFields dd,#detailName){color:#f3f1ec}
-[data-screen=detail] #mediaTabs{background:transparent}
-[data-screen=detail] #mediaTabs button{background:#343d42;color:#dbe1e2}
-[data-screen=detail] #mediaTabs button[aria-selected=true]{background:#c4a46c;color:#191d1f}
-[data-screen=detail] #contactBtn{background:#e2c28d;color:#211e18}
-[data-screen=detail] #detailStatus{background:#f2f4f1!important}
-[data-screen=detail] #balconyPanel figcaption,[data-screen=detail] .pdfLinks{color:#30383c;background:#e9ecec}
-[data-screen=detail] footer{color:#afb8bb}
 .orbit-viewport canvas{display:block;width:100%;height:100%}
 #homeSky .sky-day,#homeSky .sky-dusk{width:165%;left:-4%;right:auto;background-size:cover;background-position:center;background-repeat:no-repeat}
 #homeSky .sky-day{animation:cloudCurrent 29s ease-in-out infinite alternate}
@@ -95,3 +76,17 @@
 #app.side-lift #buildingTransition.single-entry{background:transparent!important}
 .side-lift #buildingTransition.single-entry #buildingFallback{inset:0;width:100%;height:100%;max-height:none;object-fit:cover;mask-image:none}
 .side-lift #floorLayers,.side-lift #floorStage,.side-lift #hotspots polygon{pointer-events:none}
+.parcel-tiles{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:max(100vw,177.53dvh);height:max(56.33vw,100dvh);overflow:hidden}
+#parcelOrtho .parcel-tiles img{position:absolute;max-width:none;object-fit:fill}
+/* Follow the actual skyline in the cover render, including the stair tower. */
+#homeSky{inset:auto;left:50%;top:50%;transform:translate(-50%,-50%);width:max(100vw,177.68dvh);height:max(56.28vw,100dvh);mask-image:none;
+ clip-path:polygon(0 0,100% 0,100% 47%,97% 46%,94% 47%,90% 46%,87% 48%,84% 46%,80% 47%,76% 46%,72% 47%,69.1% 47%,69.1% 36.8%,66% 32.9%,53% 32.9%,53% 26.8%,50.4% 23.9%,47.5% 26.6%,47.7% 32.9%,34.8% 32.9%,31.8% 36.3%,31.8% 48%,28% 46%,24% 47%,23.8% 45%,20% 43.8%,15% 45.8%,14.6% 47%,10% 44.7%,6% 46.8%,2.5% 45.8%,0 46.8%)}
+#homeSky .sky-day,#homeSky .sky-dusk{height:50%;width:160%;left:-3%;background-size:100% 100%;animation:coverWind 31s linear infinite alternate}
+#homeSky .sky-dusk{animation:coverWind 31s linear infinite alternate,solarLight 16s linear infinite}
+@keyframes coverWind{to{transform:translateX(-32%)}}
+@media(max-width:650px){
+ #homeSky{width:max(100vw,56.25dvh);height:max(177.78vw,100dvh);
+ clip-path:polygon(0 0,100% 0,100% 50.6%,94% 50%,90% 51%,86% 50.1%,80% 50.7%,80% 43.6%,75% 42%,54% 42%,54% 38.7%,50% 37.3%,45.7% 38.7%,46% 42%,24% 42%,20% 43.6%,20% 50.3%,17% 49.8%,12% 50.5%,11% 49.4%,6% 49.1%,2% 50%,0 49.5%)}
+ #homeSky .sky-day,#homeSky .sky-dusk{height:52%}
+}
+.motion-off #homeSky :is(.sky-day,.sky-dusk,.sun-disc){animation:none}

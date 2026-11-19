@@ -1,4 +1,9 @@
 import {interpolateFacades} from './facade-turn.js?v=2';
+let orbitModule;
+export function prepareExterior(){
+  orbitModule??=import('./photo-orbit.js?v=1');
+  return orbitModule.then(module=>module.prepareOrbit());
+}
 const byId = id => document.getElementById(id);
 let turnLayer, turnNumber = 0;
 
@@ -27,7 +32,14 @@ export async function orbit(previous, next, photos, firstPhoto) {
       to.src = photos[stop];
       await Promise.all([from.decode(), to.decode()]);
       if (run !== turnNumber) return;
-      await interpolateFacades(layer, from, to, currentView, stop, stops.length === 2 ? 400 : 620, () => run === turnNumber);
+      const args=[layer,from,to,currentView,stop,stops.length===2?350:580,()=>run===turnNumber];
+      try{
+        await prepareExterior();
+        if(run!==turnNumber)return;
+        await (await orbitModule).modelOrbit(...args);
+      }catch{
+        if(run===turnNumber)await interpolateFacades(...args);
+      }
       currentView = stop;
       if (run !== turnNumber) return;
       original = to.src;
@@ -60,17 +72,17 @@ export function flyToParcel(done) {
     {transform:'scale(1.04)'},
     {transform:'scale(1.65) rotate(4deg)',offset:.54},
     {transform:'perspective(1100px) scale(3.3) rotateX(32deg) rotate(27deg)'}
-  ], {duration:6600,easing:'cubic-bezier(.32,.12,.46,1)'});
+  ], {duration:3200,easing:'cubic-bezier(.36,.12,.48,1)'});
   animate(byId('skyPass'), [
     {transform:'scale(1.03)',opacity:1,'--opening':'-42%'},
     {transform:'scale(1.25)',opacity:1,'--opening':'-29%',offset:.22},
     {transform:'scale(1.8) translateY(-3%)',opacity:.95,'--opening':'23%',offset:.6},
     {transform:'scale(2.6) translateY(-7%)',opacity:0,'--opening':'83%'}
-  ], {duration:2650,easing:'ease-in'});
-  animate(byId('mapCredit'), [{opacity:0},{opacity:1,offset:.34},{opacity:1,offset:.83},{opacity:0}],{duration:6100});
+  ], {duration:1250,easing:'ease-in'});
+  animate(byId('mapCredit'), [{opacity:0},{opacity:1,offset:.2},{opacity:1,offset:.88},{opacity:0}],{duration:3400});
   const finish = () => {
     if (run !== flightNumber) return;
-    animate(intro,[{opacity:1},{opacity:0}],{duration:480}).finished.then(()=>{
+    animate(intro,[{opacity:1},{opacity:0}],{duration:290}).finished.then(()=>{
       if (run === flightNumber) done();
     }).catch(()=>{});
   };
@@ -78,15 +90,13 @@ export function flyToParcel(done) {
   landingTimer = setTimeout(()=>{
     if (run !== flightNumber) return;
     video.currentTime = 2.05;
-    video.playbackRate = 1.12;
+    video.playbackRate = 1.75;
     video.onplaying = () => {
       video.onplaying = null;
       if (run !== flightNumber) return;
-      animate(video,[{opacity:0},{opacity:1}],{duration:1150});
-      clearTimeout(exitTimer);
-      exitTimer = setTimeout(finish,4250);
+      animate(video,[{opacity:0},{opacity:1}],{duration:540});
     };
     video.play().catch(()=>{});
-  },4900);
-  exitTimer = setTimeout(finish,9600);
+  },2280);
+  exitTimer = setTimeout(finish,4920);
 }
